@@ -53,8 +53,12 @@ class UserController extends Controller
             'user' => $user,
         ], 201);
     }
-    public function show($id)
+    public function show(string $id)
     {
+
+        if (!\Illuminate\Support\Str::isUuid($id)) {
+            return response()->json(['message' => 'ID inválido.'], 400);
+        }
 
         $user = User::find($id);
 
@@ -73,7 +77,7 @@ class UserController extends Controller
         ]);
     }
 
-    public function update(Request $request, $id)
+    public function update(Request $request, string $id)
     {
 
         $user = User::find($id);
@@ -119,7 +123,7 @@ class UserController extends Controller
         ]);
     }
 
-    public function destroy($id)
+    public function destroy(string $id)
     {
 
         $user = User::find($id);
