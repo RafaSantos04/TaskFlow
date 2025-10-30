@@ -12,6 +12,18 @@ class User extends Authenticatable
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
     use HasApiTokens, HasFactory, Notifiable;
+
+    /**
+     * Primary key type (UUID = string)
+     */
+    protected $keyType = 'string';
+
+    /**
+     * Disables auto-increment on the primary key.
+     */
+    public $incrementing = false;
+
+
     /**
      * The attributes that are mass assignable.
      *
@@ -43,5 +55,18 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    /**
+     * Eloquent event executed before creating a new user.
+     * Automatically generates a UUID for the 'id' field.
+     */
+    protected static function booted()
+    {
+        static::creating(function ($model) {
+            if (empty($model->{$model->getKeyName()})) {
+                $model->{$model->getKeyName()} = (string) Str::uuid();
+            }
+        });
     }
 }
