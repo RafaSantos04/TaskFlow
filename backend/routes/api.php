@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\StatusController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -25,14 +26,12 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::delete('/user/{id}', [UserController::class, 'destroy']);
 
     //Tasks
-    // Route::get('/tasks', [TaskController::class, 'index']);
-    // Route::get('/task/{id}', [TaskController::class, 'show']);
-    // Route::post('/task', [TaskController::class, 'store']);
-    // Route::put('/task/{id}', [TaskController::class, 'update']);
-    // Route::delete('/task/{id}', [TaskController::class, 'destroy']);
-
     Route::apiResource('task', TaskController::class);
 
+    //Profiles
+    Route::apiResource('profile', ProfileController::class);
+
+    //Status
     Route::apiResource('status', StatusController::class);
 
 });

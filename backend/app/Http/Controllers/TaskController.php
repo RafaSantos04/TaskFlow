@@ -32,7 +32,7 @@ class TaskController extends Controller
 
         return response()->json([
             'success' => true,
-            'message' => 'Tasks retrieved successfully.',
+            'message' => 'Tarefas recuperadas com sucesso.',
             'data' => $tasks,
         ]);
     }
@@ -79,7 +79,7 @@ class TaskController extends Controller
         $task = Task::create($request->all());
 
         return response()->json([
-            'message' => 'Task created successfully.',
+            'message' => 'Tarefa criada com sucesso.',
             'data' => $task,
         ], 201);
     }
@@ -103,18 +103,18 @@ class TaskController extends Controller
     public function show(string $id)
     {
         if (!Str::isUuid($id)) {
-            return response()->json(['message' => 'Invalid ID.'], 400);
+            return response()->json(['message' => 'ID inválido.'], 400);
         }
 
         $task = Task::find($id);
 
         if (!$task) {
-            return response()->json(['message' => 'Task not found.'], 404);
+            return response()->json(['message' => 'Tarefa não encontrada.'], 404);
         }
 
         return response()->json([
             'success' => true,
-            'message' => 'Task retrieved successfully.',
+            'message' => 'Tarefa recuperada com sucesso.',
             'data' => $task,
         ]);
     }
@@ -151,7 +151,7 @@ class TaskController extends Controller
         $task = Task::find($id);
 
         if (!$task) {
-            return response()->json(['message' => 'Task not found.'], 404);
+            return response()->json(['message' => 'Tarefa não encontrada.'], 404);
         }
 
         $validator = Validator::make($request->all(), [
@@ -173,7 +173,7 @@ class TaskController extends Controller
         $task->update($request->all());
 
         return response()->json([
-            'message' => 'Task updated successfully.',
+            'message' => 'Tarefa atualizada com sucesso.',
             'data' => $task,
         ]);
     }
@@ -199,11 +199,11 @@ class TaskController extends Controller
         $task = Task::find($id);
 
         if (!$task) {
-            return response()->json(['message' => 'Task not found.'], 404);
+            return response()->json(['message' => 'Tarefa não encontrada.'], 404);
         }
 
         $task->delete();
 
-        return response()->json(['message' => 'Task deleted successfully.']);
+        return response()->json(['message' => 'Tarefa deletada com sucesso.']);
     }
 }

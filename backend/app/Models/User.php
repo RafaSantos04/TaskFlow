@@ -34,6 +34,7 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'profile_id',
     ];
 
     /**
@@ -69,5 +70,14 @@ class User extends Authenticatable
                 $model->{$model->getKeyName()} = (string) Str::uuid();
             }
         });
+    }
+
+    /**
+     * Relationship with Profile.
+     * A user can have unique profile.
+     */
+    public function profile()
+    {
+        return $this->belongsTo(Profile::class, 'profile_id');
     }
 }

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Profile;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Http\Request;
@@ -31,8 +32,8 @@ class UserController extends Controller
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
             'password' => 'required|string|min:3',
+            'profile_id' => 'nullable|uuid|exists:profile,id',
         ]);
-
 
         if ($validator->fails()) {
             return response()->json([
@@ -41,18 +42,25 @@ class UserController extends Controller
             ], 422);
         }
 
-        $user = User::create([
+        $profileId = $request->filled('profile_id')
+            ? $request->profile_id
+            : Profile::where('name', 'User')->first()?->id;
+
+        $userData = [
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
-        ]);
+            'profile_id' => $profileId,
+        ];
 
+        $user = User::create($userData);
 
         return response()->json([
             'message' => 'Usuário criado com sucesso',
             'user' => $user,
         ], 201);
     }
+
     public function show(string $id)
     {
 
@@ -113,6 +121,9 @@ class UserController extends Controller
         }
         if ($request->has('password')) {
             $user->password = Hash::make($request->password);
+        }
+        if ($request->has('profile_id')) {
+            $user->profile_id = $request->profile_id;
         }
 
         $user->save();

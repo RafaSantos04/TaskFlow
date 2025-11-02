@@ -86,7 +86,7 @@ class StatusController extends Controller
         $status = Status::find($id);
 
         if (!$status) {
-            return response()->json(['message' => 'Status not found'], 404);
+            return response()->json(['message' => 'Status não encontrado.'], 404);
         }
 
         return response()->json($status, 200);
@@ -122,7 +122,7 @@ class StatusController extends Controller
         $status = Status::find($id);
 
         if (!$status) {
-            return response()->json(['message' => 'Status not found'], 404);
+            return response()->json(['message' => 'Status não encontrado.'], 404);
         }
 
         $validated = $request->validate([
@@ -158,7 +158,7 @@ class StatusController extends Controller
         $status = Status::find($id);
 
         if (!$status) {
-            return response()->json(['message' => 'Status not found'], 404);
+            return response()->json(['message' => 'Status não encontrado.'], 404);
         }
 
         $status->delete();
