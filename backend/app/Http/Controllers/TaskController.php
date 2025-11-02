@@ -63,10 +63,10 @@ class TaskController extends Controller
         $validator = Validator::make($request->all(), [
             'task' => 'required|string|max:255',
             'status_id' => 'required|uuid|exists:status,id',
-            'data_inicio' => 'nullable|date',
-            'data_final' => 'nullable|date|after_or_equal:data_inicio',
-            'responsavel' => 'required|uuid|exists:users,id',
-            'comentarios' => 'nullable|string',
+            'start_date' => 'nullable|date',
+            'final_date' => 'nullable|date|after_or_equal:start_date',
+            'user_id' => 'required|uuid|exists:users,id',
+            'comments' => 'nullable|string',
         ]);
 
         if ($validator->fails()) {
@@ -156,11 +156,11 @@ class TaskController extends Controller
 
         $validator = Validator::make($request->all(), [
             'task' => 'sometimes|string|max:255',
-            'status_id' => 'sometimes|uuid|exists:status,id',
-            'data_inicio' => 'nullable|date',
-            'data_final' => 'nullable|date|after_or_equal:data_inicio',
-            'responsavel' => 'sometimes|uuid|exists:users,id',
-            'comentarios' => 'nullable|string',
+            'status_id' => 'required|uuid|exists:status,id',
+            'start_date' => 'nullable|date',
+            'final_date' => 'nullable|date|after_or_equal:start_date',
+            'user_id' => 'required|uuid|exists:users,id',
+            'comments' => 'nullable|string',
         ]);
 
         if ($validator->fails()) {

@@ -32,7 +32,7 @@ class Task extends Model
         parent::boot();
 
         static::creating(function ($model) {
-            if (! $model->id) {
+            if (!$model->id) {
                 $model->id = (string) Str::uuid();
             }
         });
