@@ -12,6 +12,707 @@
         }
     ],
     "paths": {
+        "/api/menus": {
+            "get": {
+                "tags": [
+                    "Menu"
+                ],
+                "summary": "Get all menus",
+                "operationId": "1dc6b7b84ebea40905c68ce4f844da25",
+                "responses": {
+                    "200": {
+                        "description": "List of all menus",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Menu"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Menu"
+                ],
+                "summary": "Create a new menu",
+                "operationId": "37652f848e93b047d0f6f39cb4df6269",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "name"
+                                ],
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "example": "Dashboard"
+                                    },
+                                    "icon": {
+                                        "type": "string",
+                                        "example": "home"
+                                    },
+                                    "url": {
+                                        "type": "string",
+                                        "example": "/dashboard"
+                                    },
+                                    "order": {
+                                        "type": "integer",
+                                        "example": 1
+                                    },
+                                    "is_active": {
+                                        "type": "boolean",
+                                        "example": true
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Menu successfully created",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Menu"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation error"
+                    }
+                }
+            }
+        },
+        "/api/menus/{id}": {
+            "get": {
+                "tags": [
+                    "Menu"
+                ],
+                "summary": "Get a specific menu by ID",
+                "operationId": "358e9ead3d3f6d8fd5b51d1f0882dc83",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Menu ID (UUID)",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Menu found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Menu"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Menu not found"
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Menu"
+                ],
+                "summary": "Update an existing menu",
+                "operationId": "67ceffba16f3b7be4391a4d6681fa431",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Menu ID (UUID)",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "name"
+                                ],
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "example": "Updated Dashboard"
+                                    },
+                                    "icon": {
+                                        "type": "string",
+                                        "example": "dashboard-outline"
+                                    },
+                                    "url": {
+                                        "type": "string",
+                                        "example": "/dashboard"
+                                    },
+                                    "order": {
+                                        "type": "integer",
+                                        "example": 2
+                                    },
+                                    "is_active": {
+                                        "type": "boolean",
+                                        "example": true
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Menu successfully updated",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Menu"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Menu not found"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Menu"
+                ],
+                "summary": "Delete a menu",
+                "operationId": "abff8a90938116c08c448319c3dc7323",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Menu ID (UUID)",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Menu successfully deleted"
+                    },
+                    "404": {
+                        "description": "Menu not found"
+                    }
+                }
+            }
+        },
+        "/api/menu-profile/attach": {
+            "post": {
+                "tags": [
+                    "MenuProfile"
+                ],
+                "summary": "Attach a Menu to a Profile",
+                "description": "Associates a specific menu item to a profile using their UUIDs.",
+                "operationId": "706f05b5810a725755143a59e8a58490",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "profile_id",
+                                    "menu_id"
+                                ],
+                                "properties": {
+                                    "profile_id": {
+                                        "type": "string",
+                                        "format": "uuid",
+                                        "example": "4da9934b-cede-4f05-ba1c-38ab1f55ccf9"
+                                    },
+                                    "menu_id": {
+                                        "type": "string",
+                                        "format": "uuid",
+                                        "example": "9da9934b-cede-4f05-ba1c-38ab1f55ccf9"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Menu successfully attached to the profile."
+                    },
+                    "422": {
+                        "description": "Validation error."
+                    }
+                }
+            }
+        },
+        "/api/menu-profile/detach": {
+            "post": {
+                "tags": [
+                    "MenuProfile"
+                ],
+                "summary": "Detach a Menu from a Profile",
+                "description": "Removes the association between a menu and a profile.",
+                "operationId": "39ea4b5a1656b5e6b19c13e412e6635b",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "profile_id",
+                                    "menu_id"
+                                ],
+                                "properties": {
+                                    "profile_id": {
+                                        "type": "string",
+                                        "format": "uuid",
+                                        "example": "4da9934b-cede-4f05-ba1c-38ab1f55ccf9"
+                                    },
+                                    "menu_id": {
+                                        "type": "string",
+                                        "format": "uuid",
+                                        "example": "9da9934b-cede-4f05-ba1c-38ab1f55ccf9"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Menu successfully detached from the profile."
+                    },
+                    "422": {
+                        "description": "Validation error."
+                    }
+                }
+            }
+        },
+        "/api/menu-profile/{profile_id}": {
+            "get": {
+                "tags": [
+                    "MenuProfile"
+                ],
+                "summary": "Get Menus by Profile",
+                "description": "Retrieves all menus associated with a specific profile.",
+                "operationId": "a5dba6dd9aa2d29731a55c8b389e76fa",
+                "parameters": [
+                    {
+                        "name": "profile_id",
+                        "in": "path",
+                        "description": "UUID of the profile",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "List of menus retrieved successfully.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Menu"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Profile not found."
+                    }
+                }
+            }
+        },
+        "/api/profile": {
+            "get": {
+                "tags": [
+                    "Profile"
+                ],
+                "summary": "Get all profile",
+                "description": "Returns a list of all registered profile.",
+                "operationId": "defe30a264a1a0c610b5725c8798a93a",
+                "responses": {
+                    "200": {
+                        "description": "List retrieved successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Profile"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Profile"
+                ],
+                "summary": "Create a new profile",
+                "description": "Creates a new profile for users with permission levels.",
+                "operationId": "b3c9fdd2f4be31dd0023dccccc3ce7f8",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "name"
+                                ],
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "example": "Administrator"
+                                    },
+                                    "description": {
+                                        "type": "string",
+                                        "example": "Full access to system features"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Profile created successfully"
+                    },
+                    "400": {
+                        "description": "Validation error"
+                    }
+                }
+            }
+        },
+        "/api/profile/{id}": {
+            "get": {
+                "tags": [
+                    "Profile"
+                ],
+                "summary": "Get a specific profile",
+                "description": "Returns the details of a specific profile by its UUID.",
+                "operationId": "dc165a15206200b87bf5f866cd0f603c",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "UUID of the profile",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Profile retrieved successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Profile"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Profile not found"
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Profile"
+                ],
+                "summary": "Update an existing profile",
+                "description": "Updates the information of an existing profile by its UUID.",
+                "operationId": "43a976110aab159a678aaa450d9d29e2",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "UUID of the profile",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "example": "Manager"
+                                    },
+                                    "description": {
+                                        "type": "string",
+                                        "example": "Can manage projects and tasks"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Profile updated successfully"
+                    },
+                    "404": {
+                        "description": "Profile not found"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Profile"
+                ],
+                "summary": "Delete a profile",
+                "description": "Removes a profile from the system by its UUID.",
+                "operationId": "26e858b4c5ea7e765252db7e342c33b8",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "UUID of the profile",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        }
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "Profile deleted successfully"
+                    },
+                    "404": {
+                        "description": "Profile not found"
+                    }
+                }
+            }
+        },
+        "/api/status": {
+            "get": {
+                "tags": [
+                    "Status"
+                ],
+                "summary": "Get all statuses",
+                "description": "Returns a list of all registered statuses.",
+                "operationId": "ba26089b59c876a5fa5c5c75513e0d49",
+                "responses": {
+                    "200": {
+                        "description": "List retrieved successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Status"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Status"
+                ],
+                "summary": "Create a new status",
+                "description": "Creates a new status based on the provided data.",
+                "operationId": "e3273f8ad49e363aa5d5e21f92e326b4",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "name",
+                                    "color"
+                                ],
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "example": "In Progress"
+                                    },
+                                    "color": {
+                                        "type": "string",
+                                        "example": "#FFA500"
+                                    },
+                                    "description": {
+                                        "type": "string",
+                                        "example": "Tasks currently being worked on"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Status created successfully"
+                    },
+                    "400": {
+                        "description": "Validation error"
+                    }
+                }
+            }
+        },
+        "/api/status/{id}": {
+            "get": {
+                "tags": [
+                    "Status"
+                ],
+                "summary": "Get a specific status",
+                "description": "Returns the details of a specific status by its UUID.",
+                "operationId": "8a6aa2edf816734b6daa1b25f3f529e3",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "UUID of the status",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Status retrieved successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Status"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Status not found"
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Status"
+                ],
+                "summary": "Update an existing status",
+                "description": "Updates the information of an existing status by its UUID.",
+                "operationId": "b7877753d6ede5509f07ac9cead60734",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "UUID of the status",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "example": "Completed"
+                                    },
+                                    "color": {
+                                        "type": "string",
+                                        "example": "#00FF00"
+                                    },
+                                    "description": {
+                                        "type": "string",
+                                        "example": "Tasks that have been completed"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Status updated successfully"
+                    },
+                    "404": {
+                        "description": "Status not found"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Status"
+                ],
+                "summary": "Delete a status",
+                "description": "Removes a status from the system by its UUID.",
+                "operationId": "5c95658333774ec5e84cde0a11daa1c3",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "UUID of the status",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        }
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "Status deleted successfully"
+                    },
+                    "404": {
+                        "description": "Status not found"
+                    }
+                }
+            }
+        },
         "/api/tasks": {
             "get": {
                 "tags": [
@@ -205,7 +906,137 @@
             }
         }
     },
+    "components": {
+        "schemas": {
+            "Menu": {
+                "title": "Menu",
+                "description": "Represents a menu item within the system.",
+                "properties": {
+                    "id": {
+                        "type": "string",
+                        "format": "uuid",
+                        "example": "9da9934b-cede-4f05-ba1c-38ab1f55ccf9"
+                    },
+                    "name": {
+                        "type": "string",
+                        "example": "Dashboard"
+                    },
+                    "slug": {
+                        "type": "string",
+                        "example": "dashboard"
+                    },
+                    "icon": {
+                        "type": "string",
+                        "example": "home"
+                    },
+                    "url": {
+                        "type": "string",
+                        "example": "/dashboard"
+                    },
+                    "order": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "is_active": {
+                        "type": "boolean",
+                        "example": true
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2025-11-03T12:00:00Z"
+                    },
+                    "updated_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2025-11-03T12:10:00Z"
+                    }
+                },
+                "type": "object"
+            },
+            "Profile": {
+                "title": "Profile",
+                "description": "Represents a user role or permission group within the system.",
+                "properties": {
+                    "id": {
+                        "type": "string",
+                        "format": "uuid",
+                        "example": "4da9934b-cede-4f05-ba1c-38ab1f55ccf9"
+                    },
+                    "name": {
+                        "type": "string",
+                        "example": "Administrator"
+                    },
+                    "description": {
+                        "type": "string",
+                        "example": "Full access to all system features."
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2025-11-03T12:00:00Z"
+                    },
+                    "updated_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2025-11-03T12:10:00Z"
+                    }
+                },
+                "type": "object"
+            },
+            "Status": {
+                "title": "Status",
+                "description": "Represents a task status entity within the system",
+                "properties": {
+                    "id": {
+                        "type": "string",
+                        "format": "uuid",
+                        "example": "9da9934b-cede-4f05-ba1c-38ab1f55ccf9"
+                    },
+                    "name": {
+                        "type": "string",
+                        "example": "In Progress"
+                    },
+                    "color": {
+                        "type": "string",
+                        "example": "#FFA500"
+                    },
+                    "description": {
+                        "type": "string",
+                        "example": "Tasks currently being worked on"
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2025-11-02T10:00:00Z"
+                    },
+                    "updated_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2025-11-02T10:30:00Z"
+                    }
+                },
+                "type": "object"
+            }
+        }
+    },
     "tags": [
+        {
+            "name": "Menu",
+            "description": "Endpoints for managing system menus"
+        },
+        {
+            "name": "MenuProfile",
+            "description": "Manage relationships between Menus and Profiles"
+        },
+        {
+            "name": "Profile",
+            "description": "Manage user profile and permission levels within the system"
+        },
+        {
+            "name": "Status",
+            "description": "Manage task statuses within the system"
+        },
         {
             "name": "Tasks",
             "description": "Endpoints for managing tasks"

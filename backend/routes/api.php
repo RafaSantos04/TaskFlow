@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\MenuController;
+use App\Http\Controllers\MenuProfileController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\StatusController;
 use Illuminate\Http\Request;
@@ -33,6 +35,14 @@ Route::middleware('auth:sanctum')->group(function () {
 
     //Status
     Route::apiResource('status', StatusController::class);
+
+    //Menus
+    Route::apiResource('menu', MenuController::class);
+
+    //Menu-Profile
+    Route::post('profile/assign-menu', [MenuProfileController::class, 'attachMenuToProfile']);
+    Route::post('profile/remove-menu', [MenuProfileController::class, 'detachMenuFromProfile']);
+    Route::get('profile/{id}/menus', [MenuProfileController::class, 'getMenusByProfile']);
 
 });
 
