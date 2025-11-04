@@ -16,10 +16,11 @@ Route::post('/login', [AuthController::class, 'login']);
 //Users (Register)
 Route::post('/user', [UserController::class, 'store']);
 
-Route::middleware('auth:sanctum')->group(function () {
+Route::middleware(['auth:sanctum', 'check.token.expiration'])->group(function () {
 
     //Auth
     Route::post('/logout', [AuthController::class, 'logout']);
+    Route::post('/refresh-token', [AuthController::class, 'refreshToken']);
 
     //Users
     Route::get('/users', [UserController::class, 'index']);

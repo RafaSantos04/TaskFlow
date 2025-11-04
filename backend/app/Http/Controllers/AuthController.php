@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Carbon\Carbon;
+
 
 class AuthController extends Controller
 {
@@ -19,9 +21,13 @@ class AuthController extends Controller
         }
 
         $user = Auth::user();
-        $token = $user->createToken('auth_token')->plainTextToken;
 
-        //Relationship Load Profile
+        $tokenResult = $user->createToken('auth_token');
+        $token = $tokenResult->plainTextToken;
+
+        $tokenResult->accessToken->expires_at = Carbon::now()->addHours(env('TOKEN_EXPIRATION_HOURS', 2));
+        $tokenResult->accessToken->save();
+
         $user->load('profile');
 
         return response()->json([
@@ -48,5 +54,25 @@ class AuthController extends Controller
         $request->user()->tokens()->delete();
 
         return response()->json(['message' => 'Logout realizado com sucesso']);
+    }
+
+    public function refreshToken(Request $request)
+    {
+        $user = $request->user();
+
+        $request->user()->currentAccessToken()->delete();
+
+        $tokenResult = $user->createToken('auth_token');
+        $token = $tokenResult->plainTextToken;
+
+        $tokenResult->accessToken->expires_at = Carbon::now()->addHours(env('TOKEN_EXPIRATION_HOURS', 2));
+        $tokenResult->accessToken->save();
+
+        return response()->json([
+            'message' => 'Token renovado com sucesso',
+            'access_token' => $token,
+            'token_type' => 'Bearer',
+            'expires_at' => $tokenResult->accessToken->expires_at,
+        ]);
     }
 }
