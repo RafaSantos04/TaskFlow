@@ -60,4 +60,19 @@ class AuthTest extends TestCase
                 'message' => 'Credenciais inválidas',
             ]);
     }
+
+    public function test_user_can_logout_successfully()
+    {
+        $user = User::factory()->create();
+
+        $token = $user->createToken('auth_token')->plainTextToken;
+
+        $response = $this->withHeader('Authorization', "Bearer $token")
+            ->postJson('/api/logout');
+
+        $response->assertStatus(200)
+            ->assertJson([
+                'message' => 'Logout realizado com sucesso',
+            ]);
+    }
 }
