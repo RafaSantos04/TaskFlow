@@ -20,19 +20,17 @@ class MenuTest extends TestCase
     {
         parent::setUp();
 
-        // Cria um perfil e um usuário autenticado
         $profile = Profile::factory()->create(['name' => 'Admin']);
 
         $this->user = User::factory()->create([
             'profile_id' => $profile->id,
         ]);
 
-        // Autentica o usuário no Sanctum
         Sanctum::actingAs($this->user, ['*']);
     }
 
     #[Test]
-    public function test_create_menu_authenticated()
+    public function create_menu_authenticated()
     {
         $payload = [
             'name' => 'Dashboard',
@@ -59,7 +57,7 @@ class MenuTest extends TestCase
     }
 
     #[Test]
-    public function test_list_menus_authenticated()
+    public function list_menus_authenticated()
     {
         Menu::factory()->count(2)->create();
 
@@ -70,7 +68,7 @@ class MenuTest extends TestCase
     }
 
     #[Test]
-    public function test_show_menu_authenticated()
+    public function show_menu_authenticated()
     {
         $menu = Menu::factory()->create([
             'name' => 'Settings',
@@ -84,7 +82,7 @@ class MenuTest extends TestCase
     }
 
     #[Test]
-    public function test_update_menu_authenticated()
+    public function update_menu_authenticated()
     {
         $menu = Menu::factory()->create([
             'name' => 'Dashboard',
@@ -116,7 +114,7 @@ class MenuTest extends TestCase
     }
 
     #[Test]
-    public function test_delete_menu_authenticated()
+    public function delete_menu_authenticated()
     {
         $menu = Menu::factory()->create();
 

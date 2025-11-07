@@ -21,19 +21,18 @@ class TaskTest extends TestCase
     {
         parent::setUp();
 
-        // Cria um perfil e um usuário autenticado
+        
         $profile = Profile::factory()->create(['name' => 'Admin']);
 
         $this->user = User::factory()->create([
             'profile_id' => $profile->id,
         ]);
 
-        // Autentica o usuário com Sanctum
         Sanctum::actingAs($this->user, ['*']);
     }
 
     #[Test]
-    public function user_can_create_task()
+    public function create_task()
     {
         $status = Status::factory()->create();
 
@@ -58,7 +57,7 @@ class TaskTest extends TestCase
     }
 
     #[Test]
-    public function user_can_list_tasks()
+    public function list_tasks()
     {
         Task::factory()->count(3)->create();
 
@@ -75,7 +74,7 @@ class TaskTest extends TestCase
     }
 
     #[Test]
-    public function user_can_show_a_single_task()
+    public function show_a_single_task()
     {
         $task = Task::factory()->create(['user_id' => $this->user->id]);
 
@@ -89,7 +88,7 @@ class TaskTest extends TestCase
     }
 
     #[Test]
-    public function user_can_update_task()
+    public function update_task()
     {
         $task = Task::factory()->create(['user_id' => $this->user->id]);
         $status = Status::factory()->create();
@@ -111,7 +110,7 @@ class TaskTest extends TestCase
 
 
     #[Test]
-    public function user_can_delete_task()
+    public function delete_task()
     {
         $task = Task::factory()->create(['user_id' => $this->user->id]);
 

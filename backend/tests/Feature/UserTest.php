@@ -13,9 +13,8 @@ class UserTest extends TestCase
     use RefreshDatabase;
 
     #[Test]
-    public function test_create_user_successfully()
+    public function user_successfully()
     {
-        // Cria o profile "User" se necessário (o controller depende disso)
         $profile = Profile::factory()->create(['name' => 'User']);
 
         $payload = [
@@ -36,7 +35,6 @@ class UserTest extends TestCase
                 ],
             ]);
 
-        // Verifica se o usuário foi salvo no banco
         $this->assertDatabaseHas('users', [
             'email' => 'rafael@example.com',
         ]);
@@ -45,7 +43,7 @@ class UserTest extends TestCase
 
 
     #[Test]
-    public function test_create_user_validation_error()
+    public function create_user_validation_error()
     {
         $response = $this->postJson('/api/user', [
             'name' => '',

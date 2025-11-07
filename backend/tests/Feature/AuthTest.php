@@ -13,7 +13,7 @@ class AuthTest extends TestCase
     use RefreshDatabase;
 
     #[Test]
-    public function test_user_can_login_successfully()
+    public function login_successfully()
     {
         $user = User::factory()->create([
             'email' => 'login@example.com',
@@ -46,7 +46,7 @@ class AuthTest extends TestCase
     }
 
     #[Test]
-    public function test_user_login_fails_with_wrong_password()
+    public function login_fails_with_wrong_password()
     {
         $user = User::factory()->create([
             'email' => 'fail@example.com',
@@ -65,7 +65,7 @@ class AuthTest extends TestCase
     }
 
     #[Test]
-    public function test_user_can_logout_successfully()
+    public function logout_successfully()
     {
         $user = User::factory()->create();
 

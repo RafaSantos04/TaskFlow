@@ -30,7 +30,7 @@ class StatusTest extends TestCase
     }
 
     #[Test]
-    public function it_can_create_a_status()
+    public function create_a_status()
     {
         $payload = [
             'name' => 'In Progress',
@@ -47,7 +47,7 @@ class StatusTest extends TestCase
     }
 
     #[Test]
-    public function it_can_list_all_statuses()
+    public function list_all_status()
     {
         Status::factory()->count(3)->create();
 
@@ -58,7 +58,7 @@ class StatusTest extends TestCase
     }
 
     #[Test]
-    public function it_can_show_a_specific_status()
+    public function show_a_specific_status()
     {
         $status = Status::factory()->create();
 
@@ -69,7 +69,7 @@ class StatusTest extends TestCase
     }
 
     #[Test]
-    public function it_can_update_a_status()
+    public function update_a_status()
     {
         $status = Status::factory()->create([
             'name' => 'Pending',
@@ -88,7 +88,7 @@ class StatusTest extends TestCase
     }
 
     #[Test]
-    public function it_can_delete_a_status()
+    public function delete_a_status()
     {
         $status = Status::factory()->create();
 

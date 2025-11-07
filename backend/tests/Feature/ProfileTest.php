@@ -31,7 +31,7 @@ class ProfileTest extends TestCase
     }
 
     #[Test]
-    public function user_can_create_profile()
+    public function create_profile()
     {
         $payload = [
             'name' => 'Test Profile',
@@ -50,7 +50,7 @@ class ProfileTest extends TestCase
     }
 
     #[Test]
-    public function user_can_list_profiles()
+    public function list_profiles()
     {
         Profile::factory()->count(3)->create();
 
@@ -63,7 +63,7 @@ class ProfileTest extends TestCase
     }
 
     #[Test]
-    public function user_can_show_a_single_profile()
+    public function show_a_single_profile()
     {
         $profile = Profile::factory()->create();
 
@@ -77,7 +77,7 @@ class ProfileTest extends TestCase
     }
 
     #[Test]
-    public function user_can_update_profile()
+    public function update_profile()
     {
         $profile = Profile::factory()->create();
 
@@ -95,7 +95,7 @@ class ProfileTest extends TestCase
     }
 
     #[Test]
-    public function user_can_delete_profile()
+    public function delete_profile()
     {
         $profile = Profile::factory()->create();
 

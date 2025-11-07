@@ -65,7 +65,7 @@ class AuthRefreshTokenTest extends TestCase
     //     $this->assertNotEquals($oldToken, $newToken);
     // }
 
-    public function test_refresh_token_fails_without_authentication()
+    public function refresh_token_fails_without_authentication()
     {
         $response = $this->postJson('/api/refresh-token');
 
