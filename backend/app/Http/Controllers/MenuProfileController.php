@@ -38,8 +38,8 @@ class MenuProfileController extends Controller
     public function attachMenuToProfile(Request $request)
     {
         $request->validate([
-            'profile_id' => 'required|exists:profiles,id',
-            'menu_id' => 'required|exists:menus,id',
+            'profile_id' => 'required|exists:profile,id',
+            'menu_id' => 'required|exists:menu,id',
         ]);
 
         $profile = Profile::findOrFail($request->profile_id);
@@ -72,8 +72,8 @@ class MenuProfileController extends Controller
     public function detachMenuFromProfile(Request $request)
     {
         $request->validate([
-            'profile_id' => 'required|exists:profiles,id',
-            'menu_id' => 'required|exists:menus,id',
+            'profile_id' => 'required|exists:profile,id',
+            'menu_id' => 'required|exists:menu,id',
         ]);
 
         $profile = Profile::findOrFail($request->profile_id);

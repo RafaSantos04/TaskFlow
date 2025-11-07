@@ -6,6 +6,7 @@ use App\Models\Menu;
 use App\Models\User;
 use App\Models\Profile;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use PHPUnit\Framework\Attributes\Test;
 use Laravel\Sanctum\Sanctum;
 use Tests\TestCase;
 
@@ -30,9 +31,7 @@ class MenuTest extends TestCase
         Sanctum::actingAs($this->user, ['*']);
     }
 
-     /**
-     * Testa criação de menu com usuário autenticado.
-     */
+    #[Test]
     public function test_create_menu_authenticated()
     {
         $payload = [
@@ -59,9 +58,7 @@ class MenuTest extends TestCase
         ]);
     }
 
-    /**
-     * Testa listagem de menus autenticado.
-     */
+    #[Test]
     public function test_list_menus_authenticated()
     {
         Menu::factory()->count(2)->create();
@@ -72,9 +69,7 @@ class MenuTest extends TestCase
             ->assertJsonCount(2);
     }
 
-    /**
-     * Testa exibir um menu.
-     */
+    #[Test]
     public function test_show_menu_authenticated()
     {
         $menu = Menu::factory()->create([
@@ -88,9 +83,7 @@ class MenuTest extends TestCase
             ->assertJsonFragment(['name' => 'Settings']);
     }
 
-    /**
-     * Testa atualização de menu autenticado.
-     */
+    #[Test]
     public function test_update_menu_authenticated()
     {
         $menu = Menu::factory()->create([
@@ -122,9 +115,7 @@ class MenuTest extends TestCase
         ]);
     }
 
-    /**
-     * Testa exclusão autenticada.
-     */
+    #[Test]
     public function test_delete_menu_authenticated()
     {
         $menu = Menu::factory()->create();
@@ -138,4 +129,6 @@ class MenuTest extends TestCase
 
         $this->assertDatabaseMissing('menu', ['id' => $menu->id]);
     }
+
+
 }

@@ -4,7 +4,7 @@ namespace Tests\Feature;
 
 use App\Models\Profile;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
+use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
 class UserTest extends TestCase
@@ -12,7 +12,7 @@ class UserTest extends TestCase
 
     use RefreshDatabase;
 
-
+    #[Test]
     public function test_create_user_successfully()
     {
         // Cria o profile "User" se necessário (o controller depende disso)
@@ -44,9 +44,7 @@ class UserTest extends TestCase
 
 
 
-    /**
-     * Testa tentativa de criação de usuário com dados inválidos.
-     */
+    #[Test]
     public function test_create_user_validation_error()
     {
         $response = $this->postJson('/api/user', [

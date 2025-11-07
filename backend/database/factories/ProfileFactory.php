@@ -15,8 +15,6 @@ class ProfileFactory extends Factory
         $name = ucfirst($this->faker->unique()->word());
 
         return [
-            // Deixe o Eloquent gerar o UUID no boot() do model, se ele já faz isso.
-            // Mas se o model não cria automaticamente, pode manter o 'id' aqui.
             'id' => (string) Str::uuid(),
             'name' => $name,
             'description' => "{$name} profile",

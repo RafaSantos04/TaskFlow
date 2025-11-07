@@ -6,6 +6,7 @@ use Closure;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Carbon\Carbon;
+use Laravel\Sanctum\TransientToken;
 
 class CheckTokenExpiration
 {
@@ -18,8 +19,12 @@ class CheckTokenExpiration
     {
         $token = $request->user()?->currentAccessToken();
 
+        // ⚙️ Ignora tokens transitórios (usados em testes e Sanctum::actingAs)
+        if ($token instanceof TransientToken) {
+            return $next($request);
+        }
+
         if ($token && $token->expires_at && Carbon::now()->greaterThan($token->expires_at)) {
-            // Token expirado → revoga o token e bloqueia a requisição
             $token->delete();
 
             return response()->json(['message' => 'Token expirado. Faça login novamente.'], 401);

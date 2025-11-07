@@ -6,6 +6,23 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
 
+
+/**
+ * @OA\Schema(
+ *     schema="Task",
+ *     title="Task",
+ *     description="Represents a task within the system.",
+ *     @OA\Property(property="id", type="string", format="uuid", example="9da9934b-cede-4f05-ba1c-38ab1f55ccf9"),
+ *     @OA\Property(property="task", type="string", example="Tarefa de exemplo"),
+ *     @OA\Property(property="status_id", type="string", example="Pendente"),
+ *     @OA\Property(property="start_date", type="date", example="2025-11-03"),
+ *     @OA\Property(property="final_date", type="date", example="2025-11-03"),
+ *     @OA\Property(property="user_id", type="string", example="9da9934b-cede-4f05-ba1c-38ab1f55ccf9"),
+ *     @OA\Property(property="comments", type="string", example="No comments"),
+ *     @OA\Property(property="created_at", type="string", format="date-time", example="2025-11-03T12:00:00Z"),
+ *     @OA\Property(property="updated_at", type="string", format="date-time", example="2025-11-03T12:10:00Z")
+ * )
+ */
 class Task extends Model
 {
     use HasFactory;

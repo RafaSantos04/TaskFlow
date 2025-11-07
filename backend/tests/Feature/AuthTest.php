@@ -4,6 +4,7 @@ namespace Tests\Feature;
 
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use PHPUnit\Framework\Attributes\Test;
 use Illuminate\Support\Facades\Hash;
 use Tests\TestCase;
 
@@ -11,6 +12,7 @@ class AuthTest extends TestCase
 {
     use RefreshDatabase;
 
+    #[Test]
     public function test_user_can_login_successfully()
     {
         $user = User::factory()->create([
@@ -43,6 +45,7 @@ class AuthTest extends TestCase
             ]);
     }
 
+    #[Test]
     public function test_user_login_fails_with_wrong_password()
     {
         $user = User::factory()->create([
@@ -61,6 +64,7 @@ class AuthTest extends TestCase
             ]);
     }
 
+    #[Test]
     public function test_user_can_logout_successfully()
     {
         $user = User::factory()->create();
