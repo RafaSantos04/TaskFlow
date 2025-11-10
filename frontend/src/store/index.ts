@@ -1,14 +1,12 @@
 // store/store.ts
 import { configureStore } from '@reduxjs/toolkit';
-// import user from './user/index';
-// import auth from './auth/index';
-// import menu from './menu/index';
+import user from './users/index';
+import auth from './auth/index';
 
 const store = configureStore({
     reducer: {
-        // user,
-        // auth,
-        // menu,
+        user,
+        auth,
     },
 });
 

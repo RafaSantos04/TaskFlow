@@ -1,77 +1,59 @@
-import { createContext, useContext, useState, useEffect, } from "react";
-import axios from "axios";
+import { createContext, useContext, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { authUser, logout } from "@store/auth";
 import { useNavigate } from "react-router-dom";
-
-interface User {
-    id: string;
-    name: string;
-    email: string;
-}
+import type { AppDispatch, RootState } from "@store/index";
 
 interface AuthContextType {
-    user: User | null;
-    token: string | null;
     login: (email: string, password: string) => Promise<void>;
-    logout: () => void;
+    logoutUser: () => void;
     isAuthenticated: boolean;
+    loading: boolean;
+    error: string | null;
 }
 
 const AuthContext = createContext<AuthContextType>({} as AuthContextType);
 
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
-    const [user, setUser] = useState<User | null>(null);
-    const [token, setToken] = useState<string | null>(localStorage.getItem("token"));
+    const dispatch = useDispatch<AppDispatch>();
     const navigate = useNavigate();
 
-    // Se tiver token salvo, mantém a sessão ao recarregar a página
-    useEffect(() => {
-        if (token) {
-            // axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;  //chamada do store posteriormente
-            fetchUser();
-        }
-    }, [token]);
-
-    const fetchUser = async () => {
-        try {
-            const { data } = await axios.get("http://localhost:8000/api/user"); // rota protegida //verificado com store posteriormente
-            setUser(data);
-        } catch {
-            logout();
-        }
-    };
+    const { user, token, loading, error } = useSelector(
+        (state: RootState) => state.auth
+    );
 
     const login = async (email: string, password: string) => {
+        const result = await dispatch(authUser({ email, password }));
 
-        // validação pelo store posteriormente
-        try {
-            const { data } = await axios.post("http://localhost:8000/api/login", { email, password });
-            localStorage.setItem("token", data.token);
-            setToken(data.token);
-            axios.defaults.headers.common["Authorization"] = `Bearer ${data.token}`;
-            await fetchUser();
+        // Verifica se a autenticação foi bem-sucedida
+        if (authUser.fulfilled.match(result)) {
             navigate("/home");
-        } catch (err) {
-            console.error("Erro ao logar:", err);
-            throw err;
+        } else {
+            console.error("Falha ao logar:", result.payload);
         }
     };
 
-    const logout = () => {
-        // validação pelo store posteriormente
-        localStorage.removeItem("token");
-        setUser(null);
-        setToken(null);
+    const logoutUser = () => {
+        dispatch(logout());
         navigate("/");
     };
+
+    // 🔄 Revalida token se estiver no localStorage
+    useEffect(() => {
+        const storedToken = localStorage.getItem("token");
+        if (storedToken && !token) {
+            // poderia chamar aqui um "refresh" ou revalidação via backend futuramente
+        }
+    }, [token]);
 
     return (
         <AuthContext.Provider
             value={{
-                user,
-                token,
                 login,
-                logout,
-                isAuthenticated: !!user && !!token,
+                logoutUser,
+                isAuthenticated: !!token && !!user,
+                loading,
+                error,
             }}
         >
             {children}

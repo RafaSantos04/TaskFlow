@@ -25,7 +25,7 @@ class AuthController extends Controller
         $tokenResult = $user->createToken('auth_token');
         $token = $tokenResult->plainTextToken;
 
-        $tokenResult->accessToken->expires_at = Carbon::now()->addHours(env('TOKEN_EXPIRATION_HOURS', 2));
+        $tokenResult->accessToken->expires_at = Carbon::now()->addHours(2);
         $tokenResult->accessToken->save();
 
         $user->load('profile');
