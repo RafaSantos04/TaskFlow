@@ -1,5 +1,8 @@
 import axios from "axios";
 import { API_URL } from "@config/api";
+// import { useNavigate } from "react-router-dom";
+
+// const navigate = useNavigate();
 
 const http = axios.create({
     baseURL: API_URL,
@@ -23,12 +26,12 @@ http.interceptors.response.use(
         if (error.response?.status === 401) {
             console.warn("Token expirado. Redirecionando para login...");
             localStorage.removeItem("token");
-            window.location.href = "/"; // ou use navigate() se tiver React Router
+            // navigate("/")
+            window.location.href = "/";
         }
         return Promise.reject(error);
     }
 );
-
 
 http.interceptors.response.use(
     (response) => response,
