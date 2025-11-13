@@ -28,6 +28,7 @@
     "baseUrl": "src",
     "paths": {
       "@api/*": ["api/*"],
+      "@assets/*": ["assets/*"],
       "@components/*": ["components/*"],
       "@config/*": ["config/*"],
       "@context/*": ["context/*"],

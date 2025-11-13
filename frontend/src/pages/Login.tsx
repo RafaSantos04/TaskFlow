@@ -11,6 +11,7 @@ export default function LoginPage() {
                 justifyContent: "center",
                 alignItems: "center",
                 minHeight: "100vh",
+
             }}
         >
             <Paper

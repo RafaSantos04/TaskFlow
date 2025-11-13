@@ -1,10 +1,11 @@
-import { AppBar, Toolbar, Typography, IconButton, Avatar, Menu, MenuItem, Box } from "@mui/material";
+import { AppBar, Toolbar, Typography, IconButton, Avatar, Menu, MenuItem, Box, Divider, Tooltip } from "@mui/material";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { logoutUser, logout } from "@store/auth";
 import type { AppDispatch } from "@store/index";
 import { useDispatch } from "react-redux";
 import { gettingUser } from "@store/users";
+import tarefaLogo from "@assets/tarefa.png";
 
 
 export default function TopBar() {
@@ -13,17 +14,18 @@ export default function TopBar() {
     const navigate = useNavigate();
     const dispatch = useDispatch<AppDispatch>();
 
-    // Abre o menu do avatar
     const handleAvatarClickOpen = (event: React.MouseEvent<HTMLElement>) => {
         setAnchorEl(event.currentTarget);
     };
 
-    // Fecha o menu do avatar
     const handleAvatarClickClose = () => {
         setAnchorEl(null);
     };
 
-    // Navega para o perfil
+    const handleFromHome = () => {
+        navigate("/home");
+    };
+
     const handleProfileClick = async () => {
         handleAvatarClickClose();
 
@@ -42,7 +44,6 @@ export default function TopBar() {
         }
     };
 
-    // Faz logout com integração Redux
     const handleLogout = async () => {
         handleAvatarClickClose();
         try {
@@ -56,14 +57,41 @@ export default function TopBar() {
     };
 
     return (
-        <AppBar position="fixed" color="primary" className="topbar">
+        // <AppBar position="fixed" color="secondary" className="topbar">
+        <AppBar position="fixed" sx={{ backgroundColor: "#000000ff" }} className="topbar">
             <Toolbar className="topbar-toolbar">
-                {/* Logo / Nome da aplicação */}
-                <Typography variant="h6" sx={{ flexGrow: 1 }} className="topbar-logo">
-                    TaskFlow
-                </Typography>
+                <Tooltip title="Ir para Home">
+                    <Box
+                        onClick={handleFromHome}
+                        sx={{
+                            display: "flex",
+                            alignItems: "center",
+                            flexGrow: 1,
+                            cursor: "pointer",
+                            "&:hover": { color: "#b3d9ff" },
+                        }}
+                    >
+                        <img
+                            src={tarefaLogo}
+                            alt="Logo TaskFlow"
+                            style={{
+                                width: 40,
+                                height: 40,
+                                marginRight: 8,
+                                borderRadius: 6,
+                                objectFit: "contain",
+                            }}
+                        />
+                        <Typography
+                            variant="h6"
+                            className="topbar-logo"
+                            sx={{ fontWeight: 600 }}
+                        >
+                            TaskFlow
+                        </Typography>
+                    </Box>
+                </Tooltip>
 
-                {/* Menu do usuário */}
                 <Box>
                     <IconButton onClick={handleAvatarClickOpen} size="large" sx={{ p: 0 }}>
                         <Avatar alt="Usuário" src="/static/images/avatar/1.jpg" />
@@ -75,6 +103,8 @@ export default function TopBar() {
                         anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
                         transformOrigin={{ vertical: "top", horizontal: "right" }}
                     >
+                        <MenuItem onClick={handleFromHome}>Home</MenuItem>
+                        <Divider />
                         <MenuItem onClick={handleProfileClick}>Perfil</MenuItem>
                         <MenuItem onClick={handleLogout}>Sair</MenuItem>
                     </Menu>
