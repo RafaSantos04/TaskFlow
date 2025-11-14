@@ -1,4 +1,6 @@
-import { Box, Typography, Paper, TextField } from "@mui/material";
+import { Box, Typography, Paper, TextField, IconButton, Tooltip } from "@mui/material";
+import AddBoxIcon from '@mui/icons-material/AddBox';
+import DeleteIcon from '@mui/icons-material/Delete';
 
 export default function Task() {
     return (
@@ -14,14 +16,67 @@ export default function Task() {
                     gap: 3,
                 }}
             >
+               
+                <Paper
+                    elevation={3}
+                    sx={{
+                        p: 2,
+                        borderRadius: 2,
+                        bgcolor: "#0000009f",
+                        color: "white",
+                        fontSize: "18px",
+                        fontWeight: 600,
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "space-between",
+                    }}
+                >
+                    <Box>
+                        <Tooltip title="Criar tarefa(s)" arrow>
+                            <IconButton
+                                size="small"
+                                sx={{
+                                    ml: 2,
+                                    color: "white",
+                                    transition: "0.3s",
+                                    "&:hover": {
+                                        bgcolor: "rgba(255,255,255,0.15)", 
+                                        color: "#90caf9",
+                                    },
+                                }}
+                            >
+                                <AddBoxIcon />
+                            </IconButton>
+                        </Tooltip>
+                        <Tooltip title="Deletar tarefa(s)" arrow>
+                            <IconButton
+                                size="small"
+                                sx={{
+                                    ml: 2,
+                                    color: "white",
+                                    transition: "0.3s",
+                                    "&:hover": {
+                                        bgcolor: "rgba(255,255,255,0.15)", 
+                                        color: "#90caf9", 
+                                    },
+                                }}
+                            >
+                                <DeleteIcon />
+                            </IconButton>
+                        </Tooltip>
+                    </Box>
+                    Gerencie suas tarefas de forma eficiente.
 
-                {/* 🔵 TextField ocupando toda a largura */}
+
+                </Paper>
+
+             
                 <TextField
                     fullWidth
                     id="search-task"
                     label="Buscar tarefa..."
                     variant="standard"
-               
+
                     sx={{
                         "& .MuiInputBase-input": {
                             color: "#fff",              // cor do texto digitado
@@ -44,7 +99,7 @@ export default function Task() {
                     }}
                 />
 
-                {/* 🔶 Área das colunas */}
+           
                 <Box
                     sx={{
                         display: "flex",
@@ -53,7 +108,7 @@ export default function Task() {
                     }}
                 >
 
-                    {/* Coluna A Fazer */}
+                
                     <Paper
                         elevation={3}
                         sx={{
@@ -71,7 +126,7 @@ export default function Task() {
                         </Typography>
                     </Paper>
 
-                    {/* Coluna Fazendo */}
+         
                     <Paper
                         elevation={3}
                         sx={{
@@ -89,7 +144,7 @@ export default function Task() {
                         </Typography>
                     </Paper>
 
-                    {/* Coluna Concluído */}
+               
                     <Paper
                         elevation={3}
                         sx={{

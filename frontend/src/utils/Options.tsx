@@ -12,7 +12,7 @@ export default function Options() {
             }}
         >
 
-            {/* Caixa Tarefas */}
+       
             <Box
                 onClick={() => navigate("/tasks")}
                 sx={{
@@ -38,7 +38,7 @@ export default function Options() {
                 Tarefas
             </Box>
 
-            {/* Caixa Calendário */}
+       
             <Box
                 // onClick={() => navigate("/calendar")}
                 sx={{
