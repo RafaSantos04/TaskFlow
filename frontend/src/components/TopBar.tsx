@@ -58,30 +58,31 @@ export default function TopBar() {
 
     return (
         // <AppBar position="fixed" color="secondary" className="topbar">
-        <AppBar position="fixed" sx={{ backgroundColor: "#000000ff" }} className="topbar">
+        <AppBar position="fixed" sx={{ backgroundColor: "#0000009f", }} className="topbar">
             <Toolbar className="topbar-toolbar">
-                <Tooltip title="Ir para Home">
-                    <Box
-                        onClick={handleFromHome}
-                        sx={{
-                            display: "flex",
-                            alignItems: "center",
-                            flexGrow: 1,
-                            cursor: "pointer",
-                            "&:hover": { color: "#b3d9ff" },
+
+                <Box
+                    onClick={handleFromHome}
+                    sx={{
+                        display: "flex",
+                        alignItems: "center",
+                        flexGrow: 1,
+                        cursor: "pointer",
+                        "&:hover": { color: "#b3d9ff" },
+                    }}
+                >
+                    <img
+                        src={tarefaLogo}
+                        alt="Logo TaskFlow"
+                        style={{
+                            width: 40,
+                            height: 40,
+                            marginRight: 8,
+                            borderRadius: 6,
+                            objectFit: "contain",
                         }}
-                    >
-                        <img
-                            src={tarefaLogo}
-                            alt="Logo TaskFlow"
-                            style={{
-                                width: 40,
-                                height: 40,
-                                marginRight: 8,
-                                borderRadius: 6,
-                                objectFit: "contain",
-                            }}
-                        />
+                    />
+                    <Tooltip title="Ir para Home">
                         <Typography
                             variant="h6"
                             className="topbar-logo"
@@ -89,8 +90,9 @@ export default function TopBar() {
                         >
                             TaskFlow
                         </Typography>
-                    </Box>
-                </Tooltip>
+                    </Tooltip>
+                </Box>
+
 
                 <Box>
                     <IconButton onClick={handleAvatarClickOpen} size="large" sx={{ p: 0 }}>
