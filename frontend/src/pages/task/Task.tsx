@@ -1,8 +1,7 @@
 import { Box, Typography, Paper, TextField, IconButton, Tooltip } from "@mui/material";
-import AddBoxIcon from '@mui/icons-material/AddBox';
-import DeleteIcon from '@mui/icons-material/Delete';
+import AssignmentIcon from '@mui/icons-material/Assignment';
 import { useState } from "react";
-import TaskComands from "./TaskComands";
+import TaskController from "./TaskController";
 
 export default function Task() {
     const [open, setOpen] = useState(false);
@@ -14,7 +13,7 @@ export default function Task() {
     return (
 
         <>
-            <TaskComands openProps={setOpen} open={open} />
+            <TaskController openProps={setOpen} open={open} />
             <Box
                 sx={{
                     p: 4,
@@ -40,7 +39,7 @@ export default function Task() {
                     }}
                 >
                     <Box>
-                        <Tooltip title="Criar tarefa(s)" arrow>
+                        <Tooltip title="Gerenciar tarefa(s)" arrow>
                             <IconButton
                                 onClick={handleClickOpen}
                                 size="small"
@@ -54,23 +53,7 @@ export default function Task() {
                                     },
                                 }}
                             >
-                                <AddBoxIcon />
-                            </IconButton>
-                        </Tooltip>
-                        <Tooltip title="Deletar tarefa(s)" arrow>
-                            <IconButton
-                                size="small"
-                                sx={{
-                                    ml: 2,
-                                    color: "white",
-                                    transition: "0.3s",
-                                    "&:hover": {
-                                        bgcolor: "rgba(255,255,255,0.15)",
-                                        color: "#90caf9",
-                                    },
-                                }}
-                            >
-                                <DeleteIcon />
+                                <AssignmentIcon />
                             </IconButton>
                         </Tooltip>
                     </Box>
