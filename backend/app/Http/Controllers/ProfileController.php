@@ -54,7 +54,7 @@ class ProfileController extends Controller
     {
         $validated = $request->validate([
             'name' => 'required|string|max:100|unique:profile,name',
-            'description' => 'nullable|string|max:255',
+            'description' => 'nullable|string|max:25',
         ]);
 
         $profile = Profile::create($validated);
@@ -124,7 +124,7 @@ class ProfileController extends Controller
 
         $validated = $request->validate([
             'name' => 'sometimes|string|max:100|unique:profile,name,' . $id,
-            'description' => 'nullable|string|max:255',
+            'description' => 'nullable|string|max:25',
         ]);
 
         $profile->update($validated);

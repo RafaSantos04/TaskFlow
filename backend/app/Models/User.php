@@ -63,8 +63,10 @@ class User extends Authenticatable
      * Eloquent event executed before creating a new user.
      * Automatically generates a UUID for the 'id' field.
      */
-    protected static function booted()
+    protected static function boot()
     {
+        parent::boot();
+
         static::creating(function ($model) {
             if (empty($model->{$model->getKeyName()})) {
                 $model->{$model->getKeyName()} = (string) Str::uuid();
