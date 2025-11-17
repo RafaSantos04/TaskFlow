@@ -10,6 +10,7 @@ import EditIcon from '@mui/icons-material/Edit';
 export default function Status() {
     const dispatch = useDispatch<AppDispatch>();
     const status = useSelector((state: RootState) => state.status.items);
+    const tasks = useSelector((state: RootState) => state.task.tasks);
 
     return (
         <>
@@ -20,7 +21,7 @@ export default function Status() {
                     flex: 1,
                 }}
             >
-                {status.map((st) => (
+                {status?.map((st) => (
                     <Paper
                         key={st.id}
                         elevation={3}
@@ -79,7 +80,7 @@ export default function Status() {
                                             },
                                         }}
                                     >
-                                        <DeleteIcon fontSize="small" />
+                                         <DeleteIcon fontSize="small" />
                                     </IconButton>
                                 </Tooltip>
                             </Box>

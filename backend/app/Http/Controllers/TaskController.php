@@ -28,7 +28,7 @@ class TaskController extends Controller
      */
     public function index()
     {
-        $tasks = Task::all();
+        $tasks = Task::with('relationshipStatus:id,name,color')->get();
 
         return response()->json([
             'success' => true,
@@ -65,7 +65,7 @@ class TaskController extends Controller
             'status_id' => 'required|uuid|exists:status,id',
             'start_date' => 'nullable|date',
             'final_date' => 'nullable|date|after_or_equal:start_date',
-            'user_id' => 'required|uuid|exists:users,id',
+            'user_id' => 'nullable|uuid|exists:users,id',
             'comments' => 'nullable|string',
         ]);
 
@@ -159,7 +159,7 @@ class TaskController extends Controller
             'status_id' => 'required|uuid|exists:status,id',
             'start_date' => 'nullable|date',
             'final_date' => 'nullable|date|after_or_equal:start_date',
-            'user_id' => 'required|uuid|exists:users,id',
+            'user_id' => 'nullable|uuid|exists:users,id',
             'comments' => 'nullable|string',
         ]);
 

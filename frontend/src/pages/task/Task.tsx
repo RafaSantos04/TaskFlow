@@ -11,7 +11,6 @@ import Status from "@pages/task/Status";
 
 
 export default function Task() {
-    const tasks = useSelector((state: RootState) => state.task.selectedTask);
     const status = useSelector((state: RootState) => state.status.items);
     const dispatch = useDispatch<AppDispatch>();
     const [open, setOpen] = useState(false);

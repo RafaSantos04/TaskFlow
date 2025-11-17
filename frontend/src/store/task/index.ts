@@ -7,7 +7,7 @@ export interface Task {
     status_id: string;
     start_date?: string | null;
     final_date?: string | null;
-    user_id: string;
+    user_id?: string;
     comments?: string | null;
 }
 
@@ -28,76 +28,66 @@ const initialState: TasksState = {
 /* ============================================================
    GET /task  – Buscar todas as tasks
 ============================================================ */
-export const fetchTasks = createAsyncThunk(
-    "tasks/fetchTasks",
-    async (_, { rejectWithValue }) => {
-        try {
-            const response = await http.get("/task");
-            return response.data.data;
-        } catch (error: any) {
-            return rejectWithValue(error.response?.data?.message || "Erro ao buscar tarefas");
-        }
+export const fetchTasks = createAsyncThunk("tasks/fetchTasks", async (_, { rejectWithValue }) => {
+    try {
+        const response = await http.get("/task");
+        return response.data.data;
+    } catch (error: any) {
+        return rejectWithValue(error.response?.data?.message || "Erro ao buscar tarefas");
     }
+}
 );
 
 /* ============================================================
    POST /task – Criar task
 ============================================================ */
-export const createTask = createAsyncThunk(
-    "tasks/createTask",
-    async (payload: Partial<Task>, { rejectWithValue }) => {
-        try {
-            const response = await http.post("/task", payload);
-            return response.data.data; // retorna task criada
-        } catch (error: any) {
-            return rejectWithValue(error.response?.data?.message || "Erro ao criar tarefa");
-        }
+export const createTask = createAsyncThunk("tasks/createTask", async (payload: Partial<Task>, { rejectWithValue }) => {
+    try {
+        const response = await http.post("/task", payload);
+        return response.data.data; // retorna task criada
+    } catch (error: any) {
+        return rejectWithValue(error.response?.data?.message || "Erro ao criar tarefa");
     }
+}
 );
 
 /* ============================================================
    GET /task/:id – Buscar task específica
 ============================================================ */
-export const fetchTaskById = createAsyncThunk(
-    "tasks/fetchTaskById",
-    async (id: string, { rejectWithValue }) => {
-        try {
-            const response = await http.get(`/task/${id}`);
-            return response.data.data;
-        } catch (error: any) {
-            return rejectWithValue(error.response?.data?.message || "Erro ao buscar tarefa");
-        }
+export const fetchTaskById = createAsyncThunk("tasks/fetchTaskById", async (id: string, { rejectWithValue }) => {
+    try {
+        const response = await http.get(`/task/${id}`);
+        return response.data.data;
+    } catch (error: any) {
+        return rejectWithValue(error.response?.data?.message || "Erro ao buscar tarefa");
     }
+}
 );
 
 /* ============================================================
    PUT /task/:id – Atualizar task
 ============================================================ */
-export const updateTask = createAsyncThunk(
-    "tasks/updateTask",
-    async ({ id, data }: { id: string; data: Partial<Task> }, { rejectWithValue }) => {
-        try {
-            const response = await http.put(`/task/${id}`, data);
-            return response.data.data;
-        } catch (error: any) {
-            return rejectWithValue(error.response?.data?.message || "Erro ao atualizar tarefa");
-        }
+export const updateTask = createAsyncThunk("tasks/updateTask", async ({ id, data }: { id: string; data: Partial<Task> }, { rejectWithValue }) => {
+    try {
+        const response = await http.put(`/task/${id}`, data);
+        return response.data.data;
+    } catch (error: any) {
+        return rejectWithValue(error.response?.data?.message || "Erro ao atualizar tarefa");
     }
+}
 );
 
 /* ============================================================
    DELETE /task/:id – Deletar task
 ============================================================ */
-export const deleteTask = createAsyncThunk(
-    "tasks/deleteTask",
-    async (id: string, { rejectWithValue }) => {
-        try {
-            await http.delete(`/task/${id}`);
-            return id;
-        } catch (error: any) {
-            return rejectWithValue(error.response?.data?.message || "Erro ao deletar tarefa");
-        }
+export const deleteTask = createAsyncThunk("tasks/deleteTask", async (id: string, { rejectWithValue }) => {
+    try {
+        await http.delete(`/task/${id}`);
+        return id;
+    } catch (error: any) {
+        return rejectWithValue(error.response?.data?.message || "Erro ao deletar tarefa");
     }
+}
 );
 
 /* ============================================================
