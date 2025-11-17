@@ -12,7 +12,7 @@ export default function Options() {
             }}
         >
 
-       
+
             <Box
                 onClick={() => navigate("/tasks")}
                 sx={{
@@ -31,14 +31,14 @@ export default function Options() {
                     fontWeight: 600,
                     transition: "0.3s",
                     "&:hover": {
-                        bgcolor: "#115293",
+                        bgcolor: "#9097f9ff",
                     },
                 }}
             >
                 Tarefas
             </Box>
 
-       
+
             <Box
                 // onClick={() => navigate("/calendar")}
                 sx={{
@@ -57,7 +57,7 @@ export default function Options() {
                     fontWeight: 600,
                     transition: "0.3s",
                     "&:hover": {
-                        bgcolor: "#115293",
+                        bgcolor: "#9097f9ff",
                     },
                 }}
             >

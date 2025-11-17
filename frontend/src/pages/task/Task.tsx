@@ -1,10 +1,25 @@
 import { Box, Typography, Paper, TextField, IconButton, Tooltip } from "@mui/material";
 import AssignmentIcon from '@mui/icons-material/Assignment';
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import TaskController from "./TaskController";
+import { useDispatch, useSelector } from 'react-redux';
+import type { AppDispatch, RootState } from '@store/index';
+import { fetchTasks } from '@store/task';
+import { fetchStatus } from "@store/status";
+import Status from "@pages/task/Status";
+
+
 
 export default function Task() {
+    const tasks = useSelector((state: RootState) => state.task.selectedTask);
+    const status = useSelector((state: RootState) => state.status.items);
+    const dispatch = useDispatch<AppDispatch>();
     const [open, setOpen] = useState(false);
+
+    useEffect(() => {
+        dispatch(fetchStatus())
+        dispatch(fetchTasks());
+    }, [dispatch, open]);
 
     const handleClickOpen = () => {
         setOpen(true);
@@ -13,7 +28,7 @@ export default function Task() {
     return (
 
         <>
-            <TaskController openProps={setOpen} open={open} />
+
             <Box
                 sx={{
                     p: 4,
@@ -39,7 +54,7 @@ export default function Task() {
                     }}
                 >
                     <Box>
-                        <Tooltip title="Gerenciar tarefa(s)" arrow>
+                        <Tooltip title="Gerenciar tarefa(s)" placement="top" arrow>
                             <IconButton
                                 onClick={handleClickOpen}
                                 size="small"
@@ -49,7 +64,7 @@ export default function Task() {
                                     transition: "0.3s",
                                     "&:hover": {
                                         bgcolor: "rgba(255,255,255,0.15)",
-                                        color: "#90caf9",
+                                        color: "#9097f9ff",
                                     },
                                 }}
                             >
@@ -90,74 +105,9 @@ export default function Task() {
                         },
                     }}
                 />
-
-
-                <Box
-                    sx={{
-                        display: "flex",
-                        gap: 3,
-                        flex: 1,
-                    }}
-                >
-
-
-                    <Paper
-                        elevation={3}
-                        sx={{
-                            flex: 1,
-                            p: 2,
-                            borderRadius: 2,
-                            display: "flex",
-                            flexDirection: "column",
-                            gap: 2,
-                            backgroundColor: "#0000009f",
-                        }}
-                    >
-                        <Typography variant="h6" fontWeight={700} color="white">
-                            A Fazer
-                        </Typography>
-                    </Paper>
-
-
-                    <Paper
-                        elevation={3}
-                        sx={{
-                            flex: 1,
-                            p: 2,
-                            borderRadius: 2,
-                            display: "flex",
-                            flexDirection: "column",
-                            gap: 2,
-                            backgroundColor: "#0000009f",
-                        }}
-                    >
-                        <Typography variant="h6" fontWeight={700} color="white">
-                            Fazendo
-                        </Typography>
-                    </Paper>
-
-
-                    <Paper
-                        elevation={3}
-                        sx={{
-                            flex: 1,
-                            p: 2,
-                            borderRadius: 2,
-                            display: "flex",
-                            flexDirection: "column",
-                            gap: 2,
-                            backgroundColor: "#0000009f",
-                        }}
-                    >
-                        <Typography variant="h6" fontWeight={700} color="white">
-                            Concluído
-                        </Typography>
-                    </Paper>
-
-                </Box>
+                <Status />
             </Box>
-
-
+            <TaskController openProps={setOpen} open={open} />
         </>
     );
 }

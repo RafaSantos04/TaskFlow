@@ -5,6 +5,7 @@ import { logoutUser, logout } from "@store/auth";
 import type { AppDispatch } from "@store/index";
 import { useDispatch } from "react-redux";
 import { gettingUser } from "@store/users";
+import HomeIcon from '@mui/icons-material/Home';
 import tarefaLogo from "@assets/tarefa.png";
 
 
@@ -62,13 +63,12 @@ export default function TopBar() {
             <Toolbar className="topbar-toolbar">
 
                 <Box
-                    onClick={handleFromHome}
                     sx={{
                         display: "flex",
                         alignItems: "center",
                         flexGrow: 1,
-                        cursor: "pointer",
-                        "&:hover": { color: "#b3d9ff" },
+                        // cursor: "pointer",
+                        // "&:hover": { color: "#b3d9ff" },
                     }}
                 >
                     <img
@@ -82,16 +82,33 @@ export default function TopBar() {
                             objectFit: "contain",
                         }}
                     />
-                    <Tooltip title="Ir para Home">
-                        <Typography
-                            variant="h6"
-                            className="topbar-logo"
-                            sx={{ fontWeight: 600 }}
-                        >
-                            TaskFlow
-                        </Typography>
-                    </Tooltip>
+
+                    <Typography
+                        variant="h6"
+                        className="topbar-logo"
+                        sx={{ fontWeight: 600 }}
+                    >
+                        TaskFlow
+                    </Typography>
+
+                    <Box sx={{ ml: 3 }}>
+                        <Tooltip title="Página Inicial" arrow>
+                            <IconButton
+                                onClick={handleFromHome}
+                                sx={{
+                                    color: "#fff",
+                                    "&:hover": {
+                                        color: "#9097f9ff",
+                                        bgcolor: "rgba(255,255,255,0.1)"
+                                    }
+                                }}
+                            >
+                                <HomeIcon />
+                            </IconButton>
+                        </Tooltip>
+                    </Box>
                 </Box>
+
 
 
                 <Box>
