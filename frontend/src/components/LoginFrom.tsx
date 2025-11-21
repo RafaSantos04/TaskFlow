@@ -8,6 +8,8 @@ import {
     IconButton,
 } from "@mui/material";
 import { useAuth } from "@context/AuthContext";
+import VisibilityIcon from '@mui/icons-material/Visibility';
+import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 
 export default function LoginForm() {
     const [email, setEmail] = useState("");
@@ -45,7 +47,7 @@ export default function LoginForm() {
                     endAdornment: (
                         <InputAdornment position="end">
                             <IconButton onClick={() => setShowPassword((p) => !p)} edge="end">
-                                {/* Ícone de visibilidade */}
+                                {showPassword ? <VisibilityIcon /> : <VisibilityOffIcon />}
                             </IconButton>
                         </InputAdornment>
                     ),

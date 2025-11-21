@@ -7,21 +7,27 @@ import type { AppDispatch, RootState } from '@store/index';
 import { fetchTasks } from '@store/task';
 import { fetchStatus } from "@store/status";
 import Status from "@pages/task/Status";
-
+import StatusController from "./StatusController";
+import AllInboxIcon from '@mui/icons-material/AllInbox';
 
 
 export default function Task() {
     const status = useSelector((state: RootState) => state.status.items);
     const dispatch = useDispatch<AppDispatch>();
-    const [open, setOpen] = useState(false);
+    const [openTask, setOpenTask] = useState<boolean>(false);
+    const [openStatus, setOpenStatus] = useState<boolean>(false)
 
     useEffect(() => {
         dispatch(fetchStatus())
         dispatch(fetchTasks());
-    }, [dispatch, open]);
+    }, [dispatch]);
 
-    const handleClickOpen = () => {
-        setOpen(true);
+    const handleClickOpen = (type: "status" | "task") => {
+        const map = {
+            status: () => setOpenStatus(true),
+            task: () => setOpenTask(true)
+        };
+        map[type]();
     };
 
     return (
@@ -53,9 +59,26 @@ export default function Task() {
                     }}
                 >
                     <Box>
+                        <Tooltip title="Gerenciar status" placement="top" arrow>
+                            <IconButton
+                                onClick={() => handleClickOpen('status')}
+                                size="small"
+                                sx={{
+                                    ml: 2,
+                                    color: "white",
+                                    transition: "0.3s",
+                                    "&:hover": {
+                                        bgcolor: "rgba(255,255,255,0.15)",
+                                        color: "#9097f9ff",
+                                    },
+                                }}
+                            >
+                                <AllInboxIcon />
+                            </IconButton>
+                        </Tooltip>
                         <Tooltip title="Gerenciar tarefa(s)" placement="top" arrow>
                             <IconButton
-                                onClick={handleClickOpen}
+                                onClick={() => handleClickOpen('task')}
                                 size="small"
                                 sx={{
                                     ml: 2,
@@ -106,7 +129,8 @@ export default function Task() {
                 />
                 <Status />
             </Box>
-            <TaskController openProps={setOpen} open={open} />
+            <TaskController openProps={setOpenTask} open={openTask} />
+            <StatusController openProps={setOpenStatus} open={openStatus} />
         </>
     );
 }

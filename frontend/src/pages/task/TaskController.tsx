@@ -52,20 +52,13 @@ export default function TaskController({ openProps, open }: TaskControllerProps)
     const [description, setDescription] = useState("");
     const [taskStatus, setTaskStatus] = useState("");
 
-    // opcional: recarrega tarefas quando o dialog abre
-    useEffect(() => {
-        if (open) {
-            dispatch(fetchTasks());
-        }
-    }, [open, dispatch]);
-
     useEffect(() => {
         if (selectedTask) {
             setName(selectedTask.task);
             setDescription(selectedTask.comments ?? "");
             setTaskStatus(selectedTask.status_id);
         }
-    }, [selectedTask]);
+    }, [open, selectedTask]);
 
     const handleCleanToAddTask = () => {
         dispatch(clearSelectedTask());
@@ -251,4 +244,4 @@ export default function TaskController({ openProps, open }: TaskControllerProps)
             </DialogActions>
         </Dialog>
     );
-}
+} 

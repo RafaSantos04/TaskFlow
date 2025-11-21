@@ -150,5 +150,4 @@ const statusSlice = createSlice({
 });
 
 export const { clearSelectedStatus } = statusSlice.actions;
-
 export default statusSlice.reducer;
