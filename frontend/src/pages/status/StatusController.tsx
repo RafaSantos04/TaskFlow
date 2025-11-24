@@ -214,17 +214,18 @@ export default function StatusController({ openProps, open }: StatusControlerPro
                                                         }}>
                                                             <ArrowDownwardIcon fontSize="inherit" />
                                                         </IconButton>
-
-                                                        <IconButton
-                                                            size="small"
-                                                            color="error"
-                                                            onClick={(e) => {
-                                                                e.stopPropagation();
-                                                                dispatch(deleteStatus(st.id));
-                                                            }}
-                                                        >
-                                                            ❌
-                                                        </IconButton>
+                                                        <Tooltip title="Excluir status" placement="top" arrow>
+                                                            <IconButton
+                                                                size="small"
+                                                                color="error"
+                                                                onClick={(e) => {
+                                                                    e.stopPropagation();
+                                                                    dispatch(deleteStatus(st.id));
+                                                                }}
+                                                            >
+                                                                ❌
+                                                            </IconButton>
+                                                        </Tooltip>
                                                     </Box>
                                                 </Box>
                                             )}
@@ -242,11 +243,11 @@ export default function StatusController({ openProps, open }: StatusControlerPro
                         <Typography variant="h6">Cadastrar / Editar Status</Typography>
 
                         <TextField label="Nome do status" value={name}
-                                   onChange={(e) => setName(e.target.value)} fullWidth />
+                            onChange={(e) => setName(e.target.value)} fullWidth />
 
                         <TextField label="Descrição" value={description}
-                                   onChange={(e) => setDescription(e.target.value)}
-                                   fullWidth multiline rows={3} />
+                            onChange={(e) => setDescription(e.target.value)}
+                            fullWidth multiline rows={3} />
 
                         <Box>
                             <Typography variant="body2" mb={1}>Cor do status</Typography>

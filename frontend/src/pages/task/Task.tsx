@@ -6,8 +6,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import type { AppDispatch, RootState } from '@store/index';
 import { fetchTasks } from '@store/task';
 import { fetchStatus } from "@store/status";
-import Status from "@pages/task/Status";
-import StatusController from "./StatusController";
+import StatusBoard from "@pages/status/StatusBoard";
+import StatusController from "@pages/status/StatusController";
 import AllInboxIcon from '@mui/icons-material/AllInbox';
 
 
@@ -127,7 +127,7 @@ export default function Task() {
                         },
                     }}
                 />
-                <Status />
+                <StatusBoard />
             </Box>
             <TaskController openProps={setOpenTask} open={openTask} />
             <StatusController openProps={setOpenStatus} open={openStatus} />
