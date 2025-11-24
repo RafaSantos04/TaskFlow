@@ -28,7 +28,9 @@ class StatusController extends Controller
      */
     public function index()
     {
-        $status = Status::all();
+          $status = Status::with('relationshipTask')     
+                    ->withCount('relationshipTask')
+                    ->get();
         return response()->json($status, 200);
     }
 
