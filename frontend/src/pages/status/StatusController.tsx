@@ -49,16 +49,10 @@ export default function StatusController({ openProps, open }: StatusControlerPro
         activationConstraint: { distance: 5 }
     }));
 
-    // -------------------------------------------------------------
-    // STATES
-    // -------------------------------------------------------------
     const [name, setName] = useState("");
     const [description, setDescription] = useState("");
     const [color, setColor] = useState("#2196f3");
 
-    // -------------------------------------------------------------
-    // SIDE EFFECTS
-    // -------------------------------------------------------------
     useEffect(() => {
         if (selectedStatus) {
             setName(selectedStatus.name);
@@ -69,9 +63,6 @@ export default function StatusController({ openProps, open }: StatusControlerPro
         }
     }, [selectedStatus]);
 
-    // -------------------------------------------------------------
-    // HELPERS
-    // -------------------------------------------------------------
     const resetForm = () => {
         setName("");
         setDescription("");
@@ -106,9 +97,6 @@ export default function StatusController({ openProps, open }: StatusControlerPro
         openProps(false);
     };
 
-    // -------------------------------------------------------------
-    // MOVE PARA CIMA E PARA BAIXO
-    // -------------------------------------------------------------
     const moveStatusUp = (index: number) => {
         if (index === 0) return;
         const reordered = arrayMove(status, index, index - 1);
@@ -121,9 +109,6 @@ export default function StatusController({ openProps, open }: StatusControlerPro
         dispatch(updateStatusOrder(reordered));
     };
 
-    // -------------------------------------------------------------
-    // RENDER
-    // -------------------------------------------------------------
     return (
         <Dialog open={open} onClose={handleClose} fullWidth maxWidth="md">
             <DialogTitle>
@@ -138,9 +123,6 @@ export default function StatusController({ openProps, open }: StatusControlerPro
             <DialogContent dividers>
                 <Box display="flex" flexDirection={{ xs: "column", md: "row" }} gap={3}>
 
-                    {/* ------------------------------------------------------------- */}
-                    {/* LISTA DE STATUS                                            */}
-                    {/* ------------------------------------------------------------- */}
                     <Box flex={1}>
                         <Typography variant="h6" mb={1}>Status Listados</Typography>
 
@@ -182,12 +164,10 @@ export default function StatusController({ openProps, open }: StatusControlerPro
                                                 >
                                                     <Box display="flex" alignItems="center" gap={1}>
 
-                                                        {/* DRAG HANDLE */}
                                                         <Box {...listeners} sx={{ cursor: "grab", px: 1 }}>
                                                             ☰
                                                         </Box>
 
-                                                        {/* BULLET COLOR */}
                                                         <Box sx={{
                                                             width: 16,
                                                             height: 16,
@@ -199,7 +179,6 @@ export default function StatusController({ openProps, open }: StatusControlerPro
                                                         <Typography>{st.name}</Typography>
                                                     </Box>
 
-                                                    {/* BOTÕES: mover / deletar */}
                                                     <Box display="flex" alignItems="center" gap={1}>
                                                         <IconButton size="small" onClick={(e) => {
                                                             e.stopPropagation();
@@ -236,9 +215,6 @@ export default function StatusController({ openProps, open }: StatusControlerPro
                         </DndContext>
                     </Box>
 
-                    {/* ------------------------------------------------------------- */}
-                    {/* FORMULÁRIO                                                  */}
-                    {/* ------------------------------------------------------------- */}
                     <Box flex={1} display="flex" flexDirection="column" gap={2}>
                         <Typography variant="h6">Cadastrar / Editar Status</Typography>
 

@@ -9,10 +9,8 @@ import Task from "@pages/task/Task";
 export default function AppRoutes() {
     return (
         <Routes>
-            {/* Rota pública */}
             <Route path="/" element={<LoginPage />} />
 
-            {/* Rotas protegidas com layout fixo */}
             <Route
                 path="/"
                 element={

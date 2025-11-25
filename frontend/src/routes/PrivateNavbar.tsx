@@ -9,7 +9,7 @@ export default function PrivateNavbar() {
 
             <Toolbar />
             <Box className="private-navbar-content">
-                <Outlet /> {/* Renderiza as rotas filhas aqui */}
+                <Outlet /> 
             </Box>
         </>
     );

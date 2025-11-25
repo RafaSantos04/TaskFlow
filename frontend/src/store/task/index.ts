@@ -25,9 +25,6 @@ const initialState: TasksState = {
     error: null,
 };
 
-/* ============================================================
-   GET /task  – Buscar todas as tasks
-============================================================ */
 export const fetchTasks = createAsyncThunk("tasks/fetchTasks", async (_, { rejectWithValue }) => {
     try {
         const response = await http.get("/task");
@@ -38,9 +35,6 @@ export const fetchTasks = createAsyncThunk("tasks/fetchTasks", async (_, { rejec
 }
 );
 
-/* ============================================================
-   POST /task – Criar task
-============================================================ */
 export const createTask = createAsyncThunk("tasks/createTask", async (payload: Partial<Task>, { rejectWithValue }) => {
     try {
         const response = await http.post("/task", payload);
@@ -51,9 +45,6 @@ export const createTask = createAsyncThunk("tasks/createTask", async (payload: P
 }
 );
 
-/* ============================================================
-   GET /task/:id – Buscar task específica
-============================================================ */
 export const fetchTaskById = createAsyncThunk("tasks/fetchTaskById", async (id: string, { rejectWithValue }) => {
     try {
         const response = await http.get(`/task/${id}`);
@@ -64,9 +55,6 @@ export const fetchTaskById = createAsyncThunk("tasks/fetchTaskById", async (id: 
 }
 );
 
-/* ============================================================
-   PUT /task/:id – Atualizar task
-============================================================ */
 export const updateTask = createAsyncThunk("tasks/updateTask", async ({ id, data }: { id: string; data: Partial<Task> }, { rejectWithValue }) => {
     try {
         const response = await http.put(`/task/${id}`, data);
@@ -77,9 +65,6 @@ export const updateTask = createAsyncThunk("tasks/updateTask", async ({ id, data
 }
 );
 
-/* ============================================================
-   DELETE /task/:id – Deletar task
-============================================================ */
 export const deleteTask = createAsyncThunk("tasks/deleteTask", async (id: string, { rejectWithValue }) => {
     try {
         await http.delete(`/task/${id}`);
@@ -90,9 +75,6 @@ export const deleteTask = createAsyncThunk("tasks/deleteTask", async (id: string
 }
 );
 
-/* ============================================================
-   Slice
-============================================================ */
 const tasksSlice = createSlice({
     name: "tasks",
     initialState,
@@ -106,7 +88,6 @@ const tasksSlice = createSlice({
     },
     extraReducers: (builder) => {
         builder
-            /* Fetch all */
             .addCase(fetchTasks.pending, (state) => {
                 state.loading = true;
             })
@@ -119,23 +100,19 @@ const tasksSlice = createSlice({
                 state.error = action.payload as string;
             })
 
-            /* Create */
             .addCase(createTask.fulfilled, (state, action) => {
                 state.tasks.push(action.payload);
             })
 
-            /* Fetch single */
             .addCase(fetchTaskById.fulfilled, (state, action) => {
                 state.selectedTask = action.payload;
             })
 
-            /* Update */
             .addCase(updateTask.fulfilled, (state, action) => {
                 const index = state.tasks.findIndex(t => t.id === action.payload.id);
                 if (index !== -1) state.tasks[index] = action.payload;
             })
 
-            /* Delete */
             .addCase(deleteTask.fulfilled, (state, action) => {
                 state.tasks = state.tasks.filter(task => task.id !== action.payload);
             });

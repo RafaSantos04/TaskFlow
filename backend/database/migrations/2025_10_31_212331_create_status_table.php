@@ -5,8 +5,7 @@ use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\DB;
 
-return new class extends Migration
-{
+return new class extends Migration {
     /**
      * Run the migrations.
      */
@@ -16,10 +15,11 @@ return new class extends Migration
         DB::statement('CREATE EXTENSION IF NOT EXISTS "uuid-ossp";');
 
         Schema::create('status', function (Blueprint $table) {
-            $table->uuid('id')->primary();   
-            $table->string('name', 100);   
-            $table->string('color', 20)->nullable(); 
-            $table->text('description')->nullable(); 
+            $table->uuid('id')->primary();
+            $table->string('name', 100);
+            $table->string('color', 20)->nullable();
+            $table->text('description')->nullable();
+            $table->integer('order')->default(0);
             $table->timestamps();
         });
     }

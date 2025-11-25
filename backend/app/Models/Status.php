@@ -33,6 +33,7 @@ class Status extends Model
         'name',
         'color',
         'description',
+        'order',
     ];
 
     /**

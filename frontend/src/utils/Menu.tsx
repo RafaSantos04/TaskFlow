@@ -28,7 +28,6 @@ export default function Menu() {
                 Dashboard
             </Box>
 
-            {/* Botão Configurações */}
             <Box
                 sx={{
                     p: 1.5,

@@ -12,19 +12,17 @@ export default function Home() {
                 flexDirection: "row",
             }}
         >
-            {/* Coluna Menu */}
             <Box
                 sx={{
-                    width: "250px",        // largura fixa do menu
-                    minWidth: "250px", // opcional
-                    borderRight: "1px solid #ffffff40", // ← linha vertical
+                    width: "250px",        
+                    minWidth: "250px", 
+                    borderRight: "1px solid #ffffff40", 
                     p: 2,
                 }}
             >
                 <Menu />
             </Box>
 
-            {/* Coluna Options */}
             <Box
                 sx={{
                     flex: 1,

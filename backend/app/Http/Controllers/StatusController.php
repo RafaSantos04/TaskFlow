@@ -28,9 +28,9 @@ class StatusController extends Controller
      */
     public function index()
     {
-          $status = Status::with('relationshipTask')     
-                    ->withCount('relationshipTask')
-                    ->get();
+        $status = Status::with('relationshipTask')
+            ->withCount('relationshipTask')
+            ->get();
         return response()->json($status, 200);
     }
 
@@ -47,10 +47,12 @@ class StatusController extends Controller
      *             @OA\Property(property="name", type="string", example="In Progress"),
      *             @OA\Property(property="color", type="string", example="#FFA500"),
      *             @OA\Property(property="description", type="string", example="Tasks currently being worked on")
+     * 
      *         )
      *     ),
      *     @OA\Response(response=201, description="Status created successfully"),
      *     @OA\Response(response=400, description="Validation error")
+     * 
      * )
      */
     public function store(Request $request)
@@ -61,7 +63,12 @@ class StatusController extends Controller
             'description' => 'nullable|string|max:255',
         ]);
 
-        $status = Status::create($validated);
+        $nextOrder = Status::max('order') + 1;
+
+        $status = Status::create([
+            ...$validated,
+            'order' => $nextOrder,
+        ]);
 
         return response()->json($status, 201);
     }

@@ -25,7 +25,6 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     const login = async (email: string, password: string) => {
         const result = await dispatch(authUser({ email, password }));
 
-        // Verifica se a autenticação foi bem-sucedida
         if (authUser.fulfilled.match(result)) {
             navigate("/home");
         } else {
@@ -38,11 +37,10 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         navigate("/");
     };
 
-    // 🔄 Revalida token se estiver no localStorage
     useEffect(() => {
         const storedToken = localStorage.getItem("token");
         if (storedToken && !token) {
-            // poderia chamar aqui um "refresh" ou revalidação via backend futuramente
+            //chamar refresh token depois
         }
     }, [token]);
 

@@ -28,9 +28,6 @@ const initialState: UserState = {
     error: null,
 };
 
-// ======================
-// 🔹 Async Thunks
-// ======================
 
 export const fetchUsers = createAsyncThunk("users/fetchUsers", async (_, { rejectWithValue }) => {
     try {
@@ -68,9 +65,6 @@ export const updateUser = createAsyncThunk("users/updateUser", async (params: Da
     }
 });
 
-// ======================
-// 🔹 Slice
-// ======================
 
 const userSlice = createSlice({
     name: "users",
@@ -81,7 +75,6 @@ const userSlice = createSlice({
         },
     },
     extraReducers: (builder) => {
-        // ======== FETCH USERS ========
         builder
             .addCase(fetchUsers.pending, (state) => {
                 state.loading = true;
@@ -96,7 +89,6 @@ const userSlice = createSlice({
                 state.error = action.payload as string;
             });
 
-        // ======== GET SINGLE USER ========
         builder
             .addCase(gettingUser.pending, (state) => {
                 state.loading = true;
@@ -111,7 +103,6 @@ const userSlice = createSlice({
                 state.error = action.payload as string;
             });
 
-        // ======== CREATE USER ========
         builder
             .addCase(createUser.pending, (state) => {
                 state.loading = true;
@@ -126,7 +117,6 @@ const userSlice = createSlice({
                 state.error = action.payload as string;
             });
 
-        // ======== UPDATE USER ========
         builder
             .addCase(updateUser.pending, (state) => {
                 state.loading = true;

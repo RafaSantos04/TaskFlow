@@ -68,16 +68,13 @@ export default function TaskController({ openProps, open }: TaskControllerProps)
     };
 
     const handleSelectTask = (task: any) => {
-        // carrega selectedTask (thunk que popula state.task.selectedTask)
         dispatch(fetchTaskById(task.id));
     };
 
     const handleDeleteTask = async (id: string) => {
         try {
-            // confirm opcional (pode trocar por dialog bonito)
             if (!confirm("Confirm delete task?")) return;
             await dispatch(deleteTask(id)).unwrap();
-            // opcional: recarregar lista (se seu slice não atualizar corretamente)
             dispatch(fetchTasks());
         } catch (err) {
             console.error("Error deleting task:", err);
@@ -152,7 +149,6 @@ export default function TaskController({ openProps, open }: TaskControllerProps)
                             maxHeight={350}
                             overflow="auto"
                         >
-                            {/* Proteção: garante que tasks é array antes de map */}
                             {Array.isArray(tasks) && tasks.length > 0 ? (
                                 <List>
                                     {tasks.map((t: any) => (
@@ -164,7 +160,7 @@ export default function TaskController({ openProps, open }: TaskControllerProps)
                                                     edge="end"
                                                     aria-label="delete"
                                                     onClick={(e) => {
-                                                        e.stopPropagation(); // evita selecionar o item
+                                                        e.stopPropagation();
                                                         handleDeleteTask(t.id);
                                                     }}
                                                 >
@@ -178,7 +174,6 @@ export default function TaskController({ openProps, open }: TaskControllerProps)
                                             >
                                                 <ListItemText
                                                     primary={t.task}
-                                                    // Proteção com optional chaining
                                                     secondary={`Status: ${t.relationship_status?.name ?? t.status_id ?? '—'}`}
                                                 />
                                             </ListItemButton>
