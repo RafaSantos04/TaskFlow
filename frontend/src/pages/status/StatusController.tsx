@@ -2,9 +2,11 @@ import {
     Box, Button, Dialog, DialogActions, DialogContent, DialogTitle,
     IconButton, Tooltip, Typography, TextField
 } from '@mui/material';
+
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import type { AppDispatch, RootState } from '@store/index';
+
 import AddBoxIcon from '@mui/icons-material/AddBox';
 import ArrowUpwardIcon from "@mui/icons-material/ArrowUpward";
 import ArrowDownwardIcon from "@mui/icons-material/ArrowDownward";
@@ -16,48 +18,54 @@ import {
     useSensor,
     useSensors
 } from "@dnd-kit/core";
+
 import {
     SortableContext,
-    verticalListSortingStrategy,
-    arrayMove
+    verticalListSortingStrategy
 } from "@dnd-kit/sortable";
 
 import SortableStatus from "./SortableStatus";
+
 import {
     createStatus,
     updateStatus,
     deleteStatus,
     fetchStatusById,
     clearSelectedStatus,
-    updateStatusOrder
+    updateStatusOrder,
+    fetchStatus
 } from '@store/status';
 
-// -------------------------------------------------------------
 
-interface StatusControlerProps {
+interface StatusControllerProps {
     openProps: (open: boolean) => void;
     open: boolean;
 }
 
-export default function StatusController({ openProps, open }: StatusControlerProps) {
+export default function StatusController({ openProps, open }: StatusControllerProps) {
     const dispatch = useDispatch<AppDispatch>();
 
     const status = useSelector((state: RootState) => state.status.items);
+    const loading = useSelector((state: RootState) => state.status.loading);
     const selectedStatus = useSelector((state: RootState) => state.status.selectedStatus);
 
-    const sensors = useSensors(useSensor(PointerSensor, {
-        activationConstraint: { distance: 5 }
-    }));
+    // Ordenação garantida pelo backend
+    const orderedStatus = [...status].sort((a, b) => a.order - b.order);
 
+    const sensors = useSensors(useSensor(PointerSensor, { activationConstraint: { distance: 5 } }));
+
+    // Formulário
     const [name, setName] = useState("");
     const [description, setDescription] = useState("");
     const [color, setColor] = useState("#2196f3");
+    const [order, setOrder] = useState("0");
 
     useEffect(() => {
         if (selectedStatus) {
             setName(selectedStatus.name);
             setDescription(selectedStatus.description);
             setColor(selectedStatus.color);
+            setOrder(String(selectedStatus.order));
         } else {
             resetForm();
         }
@@ -67,6 +75,7 @@ export default function StatusController({ openProps, open }: StatusControlerPro
         setName("");
         setDescription("");
         setColor("#2196f3");
+        setOrder("0");
     };
 
     const handleNewStatus = () => {
@@ -97,16 +106,51 @@ export default function StatusController({ openProps, open }: StatusControlerPro
         openProps(false);
     };
 
-    const moveStatusUp = (index: number) => {
-        if (index === 0) return;
-        const reordered = arrayMove(status, index, index - 1);
-        dispatch(updateStatusOrder(reordered));
+    ///////////////////////////////////////
+    //  UP / DOWN (swap baseado no order)
+    ///////////////////////////////////////
+    const moveStatusUp = async (currentOrder: number) => {
+        const ordered = [...orderedStatus];
+        const index = ordered.findIndex(s => s.order === currentOrder);
+        if (index <= 0) return;
+
+        const current = ordered[index];
+        const above = ordered[index - 1];
+
+        await dispatch(updateStatusOrder({ id: current.id, order: above.order }));
+        dispatch(fetchStatus())
     };
 
-    const moveStatusDown = (index: number) => {
-        if (index === status.length - 1) return;
-        const reordered = arrayMove(status, index, index + 1);
-        dispatch(updateStatusOrder(reordered));
+    const moveStatusDown = async (currentOrder: number) => {
+        const ordered = [...orderedStatus];
+        const index = ordered.findIndex(s => s.order === currentOrder);
+        if (index === -1 || index >= ordered.length - 1) return;
+
+        const current = ordered[index];
+        const below = ordered[index + 1];
+
+        await dispatch(updateStatusOrder({ id: current.id, order: below.order })).unwrap();
+        dispatch(fetchStatus())
+    };
+
+    ///////////////////////////////////////
+    //  DRAG & DROP
+    ///////////////////////////////////////
+    const handleDragEnd = async ({ active, over }: any) => {
+        if (!over || active.id === over.id) return;
+
+        const ordered = [...orderedStatus];
+
+        const oldIndex = ordered.findIndex(s => s.id === active.id);
+        const newIndex = ordered.findIndex(s => s.id === over.id);
+
+        if (oldIndex === -1 || newIndex === -1) return;
+
+        const draggedStatus = ordered[oldIndex];
+        const targetStatus = ordered[newIndex];
+
+        await dispatch(updateStatusOrder({ id: draggedStatus.id, order: targetStatus.order })).unwrap();
+        dispatch(fetchStatus())
     };
 
     return (
@@ -123,29 +167,25 @@ export default function StatusController({ openProps, open }: StatusControlerPro
             <DialogContent dividers>
                 <Box display="flex" flexDirection={{ xs: "column", md: "row" }} gap={3}>
 
+                    {/* LISTA DE STATUS */}
                     <Box flex={1}>
-                        <Typography variant="h6" mb={1}>Status Listados</Typography>
+                        <Typography variant="h6" mb={1}>
+                            Status Listados
+                        </Typography>
 
                         <DndContext
                             sensors={sensors}
                             collisionDetection={closestCenter}
-                            onDragEnd={({ active, over }) => {
-                                if (!over || active.id === over.id) return;
-
-                                const oldIndex = status.findIndex(s => s.id === active.id);
-                                const newIndex = status.findIndex(s => s.id === over.id);
-
-                                dispatch(updateStatusOrder(arrayMove(status, oldIndex, newIndex)));
-                            }}
+                            onDragEnd={handleDragEnd}
                         >
                             <SortableContext
-                                items={status.map(s => s.id)}
+                                items={orderedStatus.map(s => s.id)}
                                 strategy={verticalListSortingStrategy}
                             >
                                 <Box display="flex" flexDirection="column" gap={1}>
-                                    {status.map((st, index) => (
+                                    {orderedStatus.map((st) => (
                                         <SortableStatus key={st.id} id={st.id}>
-                                            {({ listeners }: any) => (
+                                            {({ listeners, attributes }) => (
                                                 <Box
                                                     onClick={() => dispatch(fetchStatusById(st.id))}
                                                     sx={{
@@ -159,12 +199,14 @@ export default function StatusController({ openProps, open }: StatusControlerPro
                                                             ? "2px solid #1976d2"
                                                             : "1px solid #ccc",
                                                         cursor: "pointer",
-                                                        "&:hover": { backgroundColor: "#f5f5f5" }
+                                                        transition: "background-color .2s ease, border .2s ease",
+                                                        "&:hover": { backgroundColor: "#f5f5f5" },
+
                                                     }}
                                                 >
+                                                    {/* Lado Esquerdo */}
                                                     <Box display="flex" alignItems="center" gap={1}>
-
-                                                        <Box {...listeners} sx={{ cursor: "grab", px: 1 }}>
+                                                        <Box {...listeners} {...attributes} sx={{ cursor: "grab", px: 1 }}>
                                                             ☰
                                                         </Box>
 
@@ -179,27 +221,50 @@ export default function StatusController({ openProps, open }: StatusControlerPro
                                                         <Typography>{st.name}</Typography>
                                                     </Box>
 
+                                                    {/* Botões */}
                                                     <Box display="flex" alignItems="center" gap={1}>
-                                                        <IconButton size="small" onClick={(e) => {
-                                                            e.stopPropagation();
-                                                            moveStatusUp(index);
-                                                        }}>
+                                                        <IconButton
+                                                            size="small"
+                                                            onClick={(e) => {
+                                                                e.stopPropagation();
+                                                                moveStatusUp(st.order);
+                                                            }}
+                                                            sx={{
+                                                                transition: "transform 0.15s ease",
+                                                                "&:hover": { transform: "scale(1.2)" },
+                                                                "&:active": { transform: "scale(0.9)" }
+                                                            }}
+                                                        >
                                                             <ArrowUpwardIcon fontSize="inherit" />
                                                         </IconButton>
 
-                                                        <IconButton size="small" onClick={(e) => {
-                                                            e.stopPropagation();
-                                                            moveStatusDown(index);
-                                                        }}>
+                                                        <IconButton
+                                                            size="small"
+                                                            onClick={(e) => {
+                                                                e.stopPropagation();
+                                                                moveStatusDown(st.order);
+                                                            }}
+                                                            sx={{
+                                                                transition: "transform 0.15s ease",
+                                                                "&:hover": { transform: "scale(1.2)" },
+                                                                "&:active": { transform: "scale(0.9)" }
+                                                            }}
+                                                        >
                                                             <ArrowDownwardIcon fontSize="inherit" />
                                                         </IconButton>
-                                                        <Tooltip title="Excluir status" placement="top" arrow>
+
+                                                        <Tooltip title="Excluir status" arrow>
                                                             <IconButton
                                                                 size="small"
                                                                 color="error"
                                                                 onClick={(e) => {
                                                                     e.stopPropagation();
                                                                     dispatch(deleteStatus(st.id));
+                                                                }}
+                                                                sx={{
+                                                                    transition: "transform 0.15s ease",
+                                                                    "&:hover": { transform: "scale(1.2)" },
+                                                                    "&:active": { transform: "scale(0.9)" }
                                                                 }}
                                                             >
                                                                 ❌
@@ -215,15 +280,25 @@ export default function StatusController({ openProps, open }: StatusControlerPro
                         </DndContext>
                     </Box>
 
+                    {/* FORMULÁRIO */}
                     <Box flex={1} display="flex" flexDirection="column" gap={2}>
                         <Typography variant="h6">Cadastrar / Editar Status</Typography>
 
-                        <TextField label="Nome do status" value={name}
-                            onChange={(e) => setName(e.target.value)} fullWidth />
+                        <TextField
+                            label="Nome"
+                            value={name}
+                            onChange={(e) => setName(e.target.value)}
+                            fullWidth
+                        />
 
-                        <TextField label="Descrição" value={description}
+                        <TextField
+                            label="Descrição"
+                            value={description}
                             onChange={(e) => setDescription(e.target.value)}
-                            fullWidth multiline rows={3} />
+                            fullWidth
+                            multiline
+                            rows={3}
+                        />
 
                         <Box>
                             <Typography variant="body2" mb={1}>Cor do status</Typography>
@@ -241,8 +316,16 @@ export default function StatusController({ openProps, open }: StatusControlerPro
 
             <DialogActions>
                 <Button onClick={handleClose}>Cancelar</Button>
-                <Button variant="contained" onClick={handleSave}>
-                    {selectedStatus ? "Atualizar" : "Salvar"}
+                <Button
+                    variant="contained"
+                    onClick={handleSave}
+                    disabled={loading}
+                    sx={{
+                        transition: "opacity .3s ease",
+                        opacity: loading ? 0.6 : 1,
+                    }}
+                >
+                    {loading ? "Salvando..." : selectedStatus ? "Atualizar" : "Salvar"}
                 </Button>
             </DialogActions>
         </Dialog>

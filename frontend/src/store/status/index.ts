@@ -67,6 +67,20 @@ export const updateStatus = createAsyncThunk(
     }
 );
 
+
+//UPDATE ORDER
+export const updateStatusOrder = createAsyncThunk(
+    "status/updateOrder",
+    async ({ id, order }: { id: string; order: number }, { rejectWithValue }) => {
+        try {
+            const response = await http.put(`/status/${id}/order`, { order });
+            return response.data.status;
+        } catch (error: any) {
+            return rejectWithValue(error.response?.data || "Erro ao atualizar ordem");
+        }
+    }
+);
+
 // DELETE
 export const deleteStatus = createAsyncThunk(
     "status/delete",
@@ -90,9 +104,6 @@ const statusSlice = createSlice({
         setSelectedStatus: (state, action) => {
             state.selectedStatus = action.payload;
         },
-        updateStatusOrder(state, action) {
-            state.items = action.payload;
-        }
     },
 
     extraReducers: (builder) => {
@@ -154,6 +165,27 @@ const statusSlice = createSlice({
             state.error = action.payload;
         });
 
+        /*UPDATE ORDER*/
+        builder.addCase(updateStatusOrder.pending, (state) => {
+            state.loading = true;
+        });
+        builder.addCase(updateStatusOrder.fulfilled, (state, action) => {
+            state.loading = false;
+
+            const updated = action.payload;
+
+            const index = state.items.findIndex(s => s.id === updated.id);
+            if (index !== -1) {
+                state.items[index] = updated;
+            }
+
+            state.items = [...state.items].sort((a, b) => a.order - b.order);
+        });
+        builder.addCase(updateStatusOrder.rejected, (state, action) => {
+            state.loading = false;
+            state.error = action.payload;
+        });
+
         /** DELETE */
         builder.addCase(deleteStatus.pending, (state) => {
             state.loading = true;
@@ -170,5 +202,5 @@ const statusSlice = createSlice({
     },
 });
 
-export const { clearSelectedStatus, setSelectedStatus, updateStatusOrder } = statusSlice.actions;
+export const { clearSelectedStatus, setSelectedStatus } = statusSlice.actions;
 export default statusSlice.reducer;

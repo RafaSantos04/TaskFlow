@@ -36,6 +36,7 @@ Route::middleware(['auth:sanctum', 'check.token.expiration'])->group(function ()
 
     //Status
     Route::apiResource('status', StatusController::class);
+    Route::put('status/{id}/order',[ StatusController::class, 'updateOrder']);
 
     //Menus
     Route::apiResource('menu', MenuController::class);

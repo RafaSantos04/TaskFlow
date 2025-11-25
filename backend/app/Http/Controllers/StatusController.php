@@ -145,6 +145,37 @@ class StatusController extends Controller
         return response()->json($status, 200);
     }
 
+    public function updateOrder(Request $request, $id)
+    {
+        $request->validate([
+            'order' => 'required|integer|min:1'
+        ]);
+
+        $status = Status::find($id);
+
+        if (!$status) {
+            return response()->json(['message' => 'Status não encontrado.'], 404);
+        }
+
+        $newOrder = $request->order;
+        $oldOrder = $status->order;
+
+        $target = Status::where('order', $newOrder)->first();
+
+        if ($target) {
+            $target->order = $oldOrder;
+            $target->save();
+        }
+
+        $status->order = $newOrder;
+        $status->save();
+
+        return response()->json([
+            'message' => 'Ordem atualizada com sucesso.',
+            'status' => $status
+        ], 200);
+    }
+
     /**
      * @OA\Delete(
      *     path="/api/status/{id}",

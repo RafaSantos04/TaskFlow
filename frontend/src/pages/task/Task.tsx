@@ -95,8 +95,6 @@ export default function Task() {
                         </Tooltip>
                     </Box>
                     Gerencie suas tarefas de forma eficiente.
-
-
                 </Paper>
 
 
