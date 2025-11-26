@@ -3,10 +3,10 @@ import { CSS } from "@dnd-kit/utilities";
 
 interface SortableStatusProps {
     id: string;
-    children: (data: any) => React.ReactNode;
+    children: (data: { isDragging: boolean }) => React.ReactNode;
 }
 
-export default function SortableStatus({ id, children }:SortableStatusProps) {
+export default function SortableStatus({ id, children }: SortableStatusProps) {
     const {
         attributes,
         listeners,
@@ -18,9 +18,11 @@ export default function SortableStatus({ id, children }:SortableStatusProps) {
 
     const style = {
         transform: CSS.Transform.toString(transform),
-        transition: transition || "transform 180ms ease",
+        transition: transition ?? "transform 0.2s ease",
+        boxShadow: isDragging ? "0px 4px 12px rgba(0,0,0,0.15)" : "none",
+        zIndex: isDragging ? 10 : 1,
         opacity: isDragging ? 0.4 : 1,
-        cursor: "grab",
+        cursor: "grab"
     };
 
     return (

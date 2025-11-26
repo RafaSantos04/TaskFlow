@@ -125,7 +125,6 @@ export default function Task() {
                         },
                     }}
                 />
-                {/* <StatusBoard /> */}
             </Box>
             <TaskController openProps={setOpenTask} open={openTask} />
             <StatusController openProps={setOpenStatus} open={openStatus} />
