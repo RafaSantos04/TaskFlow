@@ -45,7 +45,7 @@ TaskFlow/
 ├── backend/ <br># API em Laravel (PHP)
 ├── frontend/<br> # Aplicação React + TypeScript + MUI
 ├── .gitignore<br>
-└── README.md # (este arquivo)
+└── README.md <br># (este arquivo)
 
 ## 🔧 Tecnologias Utilizadas
 
