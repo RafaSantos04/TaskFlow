@@ -28,7 +28,7 @@ class TaskController extends Controller
      */
     public function index()
     {
-        $tasks = Task::with('relationshipStatus:id,name,color')->get();
+        $tasks = Task::with('relationshipStatus')->get();
 
         return response()->json([
             'success' => true,
@@ -174,6 +174,8 @@ class TaskController extends Controller
 
         $task->update($request->all());
 
+        $task->load('relationshipStatus');
+
         return response()->json([
             'message' => 'Tarefa atualizada com sucesso.',
             'data' => $task,
@@ -207,5 +209,37 @@ class TaskController extends Controller
         $task->delete();
 
         return response()->json(['message' => 'Tarefa deletada com sucesso.']);
+    }
+
+    /**
+     *  Restore a soft-deleted task
+     */
+    public function restore($id)
+    {
+        $task = Task::onlyTrashed()->find($id);
+
+        if (!$task) {
+            return response()->json(['message' => 'Tarefa não encontrada.'], 404);
+        }
+
+        $task->restore();
+
+        return response()->json(['message' => 'Tarefa restaurada com sucesso.'], 200);
+    }
+
+    /**
+     * Force delete (exclusão permanente)
+     */
+    public function forceDelete($id)
+    {
+        $task = Task::onlyTrashed()->find($id);
+
+        if (!$task) {
+            return response()->json(['message' => 'Tarefa não encontrada.'], 404);
+        }
+
+        $task->forceDelete();
+
+        return response()->json(['message' => 'Status removido permanentemente.'], 200);
     }
 }
