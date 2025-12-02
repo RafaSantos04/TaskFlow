@@ -42,10 +42,10 @@ O objetivo é transformar o TaskFlow em um projeto real, evoluindo conforme apre
 ## 🧩 Estrutura do Projeto
 
 TaskFlow/
-├── backend/ <br># API em Laravel (PHP)
-├── frontend/<br> # Aplicação React + TypeScript + MUI
-├── .gitignore<br>
-└── README.md <br># (este arquivo)
+├── backend/# API em Laravel (PHP)  <br>
+├── frontend/ # Aplicação React + TypeScript + MUI <br>
+├── .gitignore <br>
+└── README.md # (este arquivo) <br>
 
 ## 🔧 Tecnologias Utilizadas
 
