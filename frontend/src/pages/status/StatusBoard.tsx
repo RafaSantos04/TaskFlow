@@ -17,7 +17,7 @@ export default function StatusBoard() {
                 gap: 2,
                 overflowX: "auto",
                 py: 2,
-                height: "100%",
+                height: "92%",
             }}
         >
             {statuses.map((st: any) => (
@@ -31,6 +31,7 @@ export default function StatusBoard() {
                         bgcolor: "#121212",
                         color: "white",
                         flexShrink: 0,
+                         overflowY: "auto",
                         borderTop: `4px solid ${st.color ?? "#9097f9"}`, // cor do status
                     }}
                 >
@@ -62,6 +63,9 @@ export default function StatusBoard() {
                             >
                                 <Typography sx={{ fontSize: "16px", fontWeight: 500 }}>
                                     {tsk.task}
+                                </Typography>
+                                 <Typography sx={{ fontSize: "16px", fontWeight: 500 }}>
+                                    {tsk.comments}
                                 </Typography>
                             </Paper>
                         ))}

@@ -14,7 +14,7 @@ export default function Menu() {
             }}
         >
        
-            <Box
+            {/* <Box
                 sx={{
                     p: 1.5,
                     borderRadius: 1,
@@ -26,7 +26,7 @@ export default function Menu() {
                 }}
             >
                 Dashboard
-            </Box>
+            </Box> */}
 
             <Box
                 sx={{

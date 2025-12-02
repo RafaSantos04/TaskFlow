@@ -39,7 +39,7 @@ export default function Options() {
             </Box>
 
 
-            <Box
+            {/* <Box
                 // onClick={() => navigate("/calendar")}
                 sx={{
                     bgcolor: "#8d8d8dff",
@@ -62,7 +62,7 @@ export default function Options() {
                 }}
             >
                 Calendário
-            </Box>
+            </Box> */}
 
         </Box>
     );

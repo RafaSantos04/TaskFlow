@@ -127,7 +127,7 @@ export default function Task() {
                     }}
                 />
 
-                <Box sx={{ flex: 1, overflow: "hidden" }}>
+                <Box sx={{ flex: 1, overflow: "auto" }}>
                     <StatusBoard />
                 </Box>
 

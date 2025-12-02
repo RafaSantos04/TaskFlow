@@ -250,7 +250,7 @@ export default function StatusController({ openProps, open }: StatusControllerPr
                                                                 <ArrowDownwardIcon fontSize="inherit" />
                                                             </IconButton>
 
-                                                            {/* <Tooltip title="Excluir status" arrow>
+                                                            <Tooltip title="Excluir status" arrow>
                                                                 <IconButton
                                                                     size="small"
                                                                     color="error"
@@ -267,7 +267,7 @@ export default function StatusController({ openProps, open }: StatusControllerPr
                                                                 >
                                                                     ❌
                                                                 </IconButton>
-                                                            </Tooltip> */}
+                                                            </Tooltip>
                                                         </Box>
                                                     </Box>
                                                 </motion.div>
