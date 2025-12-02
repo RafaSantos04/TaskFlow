@@ -30,5 +30,5 @@ Thumbs.db
 .env.exemple
 .env.testing
 phpunit.xml
-tests/AuthTest.php
+/tests/Feature/
 
