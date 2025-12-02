@@ -27,6 +27,8 @@ Thumbs.db
 .env.local
 .env.development
 .env.production
-.env.testing
 .env.exemple
+.env.testing
+phpunit.xml
+tests/AuthTest.php
 
