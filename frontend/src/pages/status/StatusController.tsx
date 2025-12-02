@@ -83,7 +83,7 @@ export default function StatusController({ openProps, open }: StatusControllerPr
         dispatch(clearSelectedStatus());
     };
 
-    const handleSave = () => {
+    const handleSave = async () => {
         if (!name.trim()) {
             alert("Informe um nome para o status!");
             return;
@@ -92,12 +92,10 @@ export default function StatusController({ openProps, open }: StatusControllerPr
         const payload = { name, description, color };
 
         if (selectedStatus) {
-            dispatch(updateStatus({ id: selectedStatus.id, ...payload }));
+            await dispatch(updateStatus({ id: selectedStatus.id, ...payload })).unwrap();
         } else {
-            dispatch(createStatus(payload));
+            await dispatch(createStatus(payload)).unwrap();
         }
-
-        handleClose();
     };
 
     const handleClose = () => {

@@ -102,7 +102,6 @@ export default function TaskController({ openProps, open }: TaskControllerProps)
         } catch (error) {
             console.log(error);
         }
-        handleClose();
     };
 
     const handleClose = () => {

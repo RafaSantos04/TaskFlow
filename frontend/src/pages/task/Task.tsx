@@ -9,6 +9,7 @@ import { fetchStatus } from "@store/status";
 // import StatusBoard from "@pages/status/StatusBoard";
 import StatusController from "@pages/status/StatusController";
 import AllInboxIcon from '@mui/icons-material/AllInbox';
+import StatusBoard from "@pages/status/StatusBoard";
 
 
 export default function Task() {
@@ -125,6 +126,11 @@ export default function Task() {
                         },
                     }}
                 />
+
+                <Box sx={{ flex: 1, overflow: "hidden" }}>
+                    <StatusBoard />
+                </Box>
+
             </Box>
             <TaskController openProps={setOpenTask} open={openTask} />
             <StatusController openProps={setOpenStatus} open={openStatus} />

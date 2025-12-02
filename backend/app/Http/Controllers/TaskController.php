@@ -78,6 +78,8 @@ class TaskController extends Controller
 
         $task = Task::create($request->all());
 
+        $task->load('relationshipStatus');
+
         return response()->json([
             'message' => 'Tarefa criada com sucesso.',
             'data' => $task,
@@ -106,7 +108,7 @@ class TaskController extends Controller
             return response()->json(['message' => 'ID inválido.'], 400);
         }
 
-        $task = Task::find($id);
+        $task = Task::with('relationshipStatus')->findOrFail($id);
 
         if (!$task) {
             return response()->json(['message' => 'Tarefa não encontrada.'], 404);
