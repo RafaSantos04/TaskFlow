@@ -158,105 +158,85 @@ export default function StatusController({ openProps, open }: StatusControllerPr
 
             <DialogContent dividers>
                 <Box display="flex" flexDirection={{ xs: "column", md: "row" }} gap={3}>
-
-                    <Box flex={1}>
+                    <Box
+                        sx={{
+                            flex: 1,
+                            display: "flex",
+                            flexDirection: "column",
+                            borderRadius: 1
+                        }}>
                         <Typography variant="h6" mb={1}>
                             Status Listados
                         </Typography>
 
-                        <DndContext
-                            sensors={sensors}
-                            collisionDetection={closestCenter}
-                            onDragEnd={handleDragEnd}
+                        <Box
+                            sx={{
+                                flex: 1,
+                                minHeight: 0,
+                                maxHeight: "40vh",
+                                overflowY: "auto",
+                                p: 2,
+                            }}
                         >
-                            <SortableContext
-                                items={orderedStatus.map(s => s.id)}
-                                strategy={verticalListSortingStrategy}
+                            <DndContext
+                                sensors={sensors}
+                                collisionDetection={closestCenter}
+                                onDragEnd={handleDragEnd}
                             >
-                                <Box display="flex" flexDirection="column" gap={1}>
-                                    {orderedStatus.map((st) => (
-                                        <SortableStatus key={st.id} id={st.id}>
-                                            {({ listeners, attributes, isDragging, transform }: any) => (
-                                                <motion.div
-                                                    layout
-                                                    initial={{ opacity: 0, y: 10 }}
-                                                    animate={{ opacity: 1, y: 0 }}
-                                                    exit={{ opacity: 0, y: -10 }}
-                                                    transition={{ duration: 0.15 }}
-                                                >
-                                                    <Box
-                                                        onClick={() => dispatch(fetchStatusById(st.id))}
-                                                        sx={{
-                                                            p: 1.5,
-                                                            borderRadius: 1,
-                                                            backgroundColor: "white",
-                                                            display: "flex",
-                                                            alignItems: "center",
-                                                            justifyContent: "space-between",
-                                                            border: selectedStatus?.id === st.id
-                                                                ? "2px solid #1976d2"
-                                                                : "1px solid #ccc",
-                                                            cursor: "pointer",
-                                                            transition: "background-color .2s ease, border .2s ease, transform .15s ease",
-                                                            boxShadow: isDragging ? "0px 4px 12px rgba(0,0,0,0.15)" : "none",
-                                                            zIndex: isDragging ? 10 : 1,
-                                                            "&:hover": { backgroundColor: "#f5f5f5", transform: "scale(1.01)" },
-                                                        }}
+                                <SortableContext
+                                    items={orderedStatus.map(s => s.id)}
+                                    strategy={verticalListSortingStrategy}
+                                >
+                                    <Box display="flex" flexDirection="column" gap={1}>
+                                        {orderedStatus.map((st) => (
+                                            <SortableStatus key={st.id} id={st.id}>
+                                                {({ listeners, attributes, isDragging, transform }: any) => (
+                                                    <motion.div
+                                                        layout
+                                                        initial={{ opacity: 0, y: 10 }}
+                                                        animate={{ opacity: 1, y: 0 }}
+                                                        exit={{ opacity: 0, y: -10 }}
+                                                        transition={{ duration: 0.15 }}
                                                     >
-                                                        <Box display="flex" alignItems="center" gap={1}>
-                                                            <Box {...listeners} {...attributes} sx={{ cursor: "grab", px: 1 }}>
-                                                                ☰
+                                                        <Box
+                                                            onClick={() => dispatch(fetchStatusById(st.id))}
+                                                            sx={{
+                                                                p: 1.5,
+                                                                borderRadius: 1,
+                                                                backgroundColor: "white",
+                                                                display: "flex",
+                                                                alignItems: "center",
+                                                                justifyContent: "space-between",
+                                                                border: selectedStatus?.id === st.id
+                                                                    ? "2px solid #1976d2"
+                                                                    : "1px solid #ccc",
+                                                                cursor: "pointer",
+                                                                transition: "background-color .2s ease, border .2s ease, transform .15s ease",
+                                                                boxShadow: isDragging ? "0px 4px 12px rgba(0,0,0,0.15)" : "none",
+                                                                zIndex: isDragging ? 10 : 1,
+                                                                "&:hover": { backgroundColor: "#f5f5f5", transform: "scale(1.01)" },
+                                                            }}
+                                                        >
+                                                            <Box display="flex" alignItems="center" gap={1}>
+                                                                <Box {...listeners} {...attributes} sx={{ cursor: "grab", px: 1 }}>
+                                                                    ☰
+                                                                </Box>
+                                                                <Box sx={{
+                                                                    width: 16,
+                                                                    height: 16,
+                                                                    borderRadius: "50%",
+                                                                    backgroundColor: st.color,
+                                                                    border: "1px solid #999"
+                                                                }} />
+                                                                <Typography>{st.name}</Typography>
                                                             </Box>
-                                                            <Box sx={{
-                                                                width: 16,
-                                                                height: 16,
-                                                                borderRadius: "50%",
-                                                                backgroundColor: st.color,
-                                                                border: "1px solid #999"
-                                                            }} />
-                                                            <Typography>{st.name}</Typography>
-                                                        </Box>
 
-                                                        <Box display="flex" alignItems="center" gap={1}>
-                                                            <IconButton
-                                                                size="small"
-                                                                onClick={(e) => {
-                                                                    e.stopPropagation();
-                                                                    moveStatusUp(st.order);
-                                                                }}
-                                                                sx={{
-                                                                    transition: "transform .15s ease, opacity .2s",
-                                                                    opacity: 0.8,
-                                                                    "&:hover": { transform: "scale(1.2)", opacity: 1 },
-                                                                    "&:active": { transform: "scale(0.85)" },
-                                                                }}
-                                                            >
-                                                                <ArrowUpwardIcon fontSize="inherit" />
-                                                            </IconButton>
-
-                                                            <IconButton
-                                                                size="small"
-                                                                onClick={(e) => {
-                                                                    e.stopPropagation();
-                                                                    moveStatusDown(st.order);
-                                                                }}
-                                                                sx={{
-                                                                    transition: "transform .15s ease, opacity .2s",
-                                                                    opacity: 0.8,
-                                                                    "&:hover": { transform: "scale(1.2)", opacity: 1 },
-                                                                    "&:active": { transform: "scale(0.85)" },
-                                                                }}
-                                                            >
-                                                                <ArrowDownwardIcon fontSize="inherit" />
-                                                            </IconButton>
-
-                                                            <Tooltip title="Excluir status" arrow>
+                                                            <Box display="flex" alignItems="center" gap={1}>
                                                                 <IconButton
                                                                     size="small"
-                                                                    color="error"
                                                                     onClick={(e) => {
                                                                         e.stopPropagation();
-                                                                        dispatch(deleteStatus(st.id));
+                                                                        moveStatusUp(st.order);
                                                                     }}
                                                                     sx={{
                                                                         transition: "transform .15s ease, opacity .2s",
@@ -265,19 +245,54 @@ export default function StatusController({ openProps, open }: StatusControllerPr
                                                                         "&:active": { transform: "scale(0.85)" },
                                                                     }}
                                                                 >
-                                                                    ❌
+                                                                    <ArrowUpwardIcon fontSize="inherit" />
                                                                 </IconButton>
-                                                            </Tooltip>
-                                                        </Box>
-                                                    </Box>
-                                                </motion.div>
-                                            )}
-                                        </SortableStatus>
-                                    ))}
-                                </Box>
-                            </SortableContext>
 
-                        </DndContext>
+                                                                <IconButton
+                                                                    size="small"
+                                                                    onClick={(e) => {
+                                                                        e.stopPropagation();
+                                                                        moveStatusDown(st.order);
+                                                                    }}
+                                                                    sx={{
+                                                                        transition: "transform .15s ease, opacity .2s",
+                                                                        opacity: 0.8,
+                                                                        "&:hover": { transform: "scale(1.2)", opacity: 1 },
+                                                                        "&:active": { transform: "scale(0.85)" },
+                                                                    }}
+                                                                >
+                                                                    <ArrowDownwardIcon fontSize="inherit" />
+                                                                </IconButton>
+
+                                                                <Tooltip title="Excluir status" arrow>
+                                                                    <IconButton
+                                                                        size="small"
+                                                                        color="error"
+                                                                        onClick={(e) => {
+                                                                            e.stopPropagation();
+                                                                            dispatch(deleteStatus(st.id));
+                                                                        }}
+                                                                        sx={{
+                                                                            transition: "transform .15s ease, opacity .2s",
+                                                                            opacity: 0.8,
+                                                                            "&:hover": { transform: "scale(1.2)", opacity: 1 },
+                                                                            "&:active": { transform: "scale(0.85)" },
+                                                                        }}
+                                                                    >
+                                                                        ❌
+                                                                    </IconButton>
+                                                                </Tooltip>
+                                                            </Box>
+                                                        </Box>
+                                                    </motion.div>
+                                                )}
+                                            </SortableStatus>
+                                        ))}
+                                    </Box>
+                                </SortableContext>
+
+                            </DndContext>
+                        </Box>
                     </Box>
 
                     <Box flex={1} display="flex" flexDirection="column" gap={2}>

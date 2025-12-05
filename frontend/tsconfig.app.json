@@ -27,6 +27,7 @@
     /* ✅ Aliases */
     "baseUrl": "src",
     "paths": {
+      "@/*": ["*"],
       "@api/*": ["api/*"],
       "@assets/*": ["assets/*"],
       "@components/*": ["components/*"],
@@ -38,7 +39,7 @@
       "@store/*": ["store/*"],
       "@types/*": ["types/*"],
       "@utils/*": ["utils/*"]
-    }
+}
   },
   "include": ["src"]
 }

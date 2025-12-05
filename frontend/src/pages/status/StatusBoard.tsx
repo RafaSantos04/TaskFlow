@@ -1,14 +1,27 @@
-import { Box, Paper, Typography } from "@mui/material";
-import { useSelector } from "react-redux";
-import type { RootState } from "@store/index";
+import { Box, IconButton, InputAdornment, MenuItem, Paper, TextField, Typography } from "@mui/material";
+import { useDispatch, useSelector } from "react-redux";
+import type { AppDispatch, RootState } from "@store/index";
+import { updateTask } from "@store/task";
+import { useState } from "react";
+import EditIcon from "@mui/icons-material/Edit";
+import CheckIcon from "@mui/icons-material/Check";
+import { CommentEditor } from "./CommentEditor";
 
 export default function StatusBoard() {
-
+    const dispatch = useDispatch<AppDispatch>();
     const rawStatuses = useSelector((state: RootState) => state.status.items);
     const tasks = useSelector((state: RootState) => state.task.tasks);
+    console.log(tasks);
 
-    // Ordena por order ASC
     const statuses = [...rawStatuses].sort((a, b) => a.order - b.order);
+
+    const [editing, setEditing] = useState(false);
+    const [taskname, setTaskName] = useState<string>("");
+    const [comment, setComment] = useState<string>("");
+
+    const handleSave = () => {
+
+    }
 
     return (
         <Box
@@ -31,7 +44,7 @@ export default function StatusBoard() {
                         bgcolor: "#121212",
                         color: "white",
                         flexShrink: 0,
-                         overflowY: "auto",
+                        overflowY: "auto",
                         borderTop: `4px solid ${st.color ?? "#9097f9"}`, // cor do status
                     }}
                 >
@@ -48,26 +61,60 @@ export default function StatusBoard() {
                             <Paper
                                 key={tsk.id}
                                 sx={{
-                                    p: 1.5,
+                                    position: "relative",
+                                    p: 2,
                                     mb: 2,
-                                    bgcolor: "#1e1e1e",
-                                    border: "1px solid #9097f933",
-                                    borderRadius: 2,
-                                    cursor: "pointer",
-                                    transition: "0.2s",
+                                    bgcolor: "#1b1b1b",
+                                    borderRadius: 3,
+                                    borderLeft: `6px solid ${tsk.relationship_status?.color || "#888"}`,
+                                    transition: "0.15s ease",
                                     "&:hover": {
-                                        bgcolor: "#262626",
-                                        transform: "scale(1.02)",
+                                        bgcolor: "#242424",
+                                        transform: "translateY(-2px)",
+                                        boxShadow: "0px 4px 12px rgba(0,0,0,0.3)",
                                     },
                                 }}
                             >
-                                <Typography sx={{ fontSize: "16px", fontWeight: 500 }}>
-                                    {tsk.task}
-                                </Typography>
-                                 <Typography sx={{ fontSize: "16px", fontWeight: 500 }}>
-                                    {tsk.comments}
-                                </Typography>
+                                <Box display="flex" justifyContent="space-between" alignItems="center">
+                                    <Typography sx={{ fontSize: "17px", fontWeight: 600 }}>
+                                        {tsk.task}
+                                    </Typography>
+
+                                    <TextField
+                                        select
+                                        size="small"
+                                        value={tsk.status_id}
+                                        onChange={(e) => dispatch(updateTask({ id: tsk.id, data: { task: tsk.task, status_id: e.target.value } }))}
+                                        sx={{
+                                            minWidth: 140,
+                                            bgcolor: "#262626",
+                                            borderRadius: 1,
+                                            "& .MuiSelect-select": { py: 1 },
+                                        }}
+                                    >
+                                        {statuses.map((st) => (
+                                            <MenuItem key={st.id} value={st.id}>
+                                                <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+                                                    <Box
+                                                        sx={{
+                                                            width: 10,
+                                                            height: 10,
+                                                            borderRadius: "50%",
+                                                            backgroundColor: st.color,
+                                                        }}
+                                                    />
+                                                    {st.name}
+                                                </Box>
+                                            </MenuItem>
+                                        ))}
+                                    </TextField>
+                                </Box>
+
+                                {tsk.comments && (
+                                      <CommentEditor tsk={tsk} />
+                                )}
                             </Paper>
+
                         ))}
                 </Paper>
             ))}
